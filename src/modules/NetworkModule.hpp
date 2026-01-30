@@ -89,8 +89,8 @@ class NetworkModule : public Krell::IModule {
             _data["Upload"]   = formatSpeed(diffTx);
         }
 
-        std::string getName() const override { return _name; }
-        const std::map<std::string, std::string> &getData() const override { return _data; }
+        std::string getName() const override {return _name;}
+        const std::map<std::string, std::string> &getData() const override {return _data;}
 };
 
 #endif /* !NETWORKMODULE_HPP_ */
