@@ -22,8 +22,8 @@ int main(int ac, char **av)
 
     if (ac > 1 && std::string(av[1]) == "-sfml") {
         display = new SfmlDisplay();
-    } else {
-        display = new NcursesDisplay();
+    // } else {
+    //     display = new NcursesDisplay();
     }
 
     std::vector<Krell::IModule *> modules;
@@ -35,15 +35,19 @@ int main(int ac, char **av)
     modules.push_back(new NetworkModule());
 
     display->init();
+    sf::Clock updateClock;
     bool run = true;
 
+    for (auto &module : modules)
+        module->update();
     while (run) {
-        for (auto &module : modules) {
-            module->update();
+        if (updateClock.getElapsedTime().asMilliseconds() >= 1000) {
+            for (auto &module : modules)
+                module->update();
+            updateClock.restart();
         }
 
         display->display(modules);
-
         run = display->handle_inputs();
     }
     display->stop();
