@@ -33,6 +33,7 @@ int main(int ac, char **av)
     modules.push_back(new CpuModule());
     modules.push_back(new RamModule());
     modules.push_back(new NetworkModule());
+
     display->init();
     sf::Clock updateClock;
     bool run = true;
