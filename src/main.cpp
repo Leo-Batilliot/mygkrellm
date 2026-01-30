@@ -10,6 +10,8 @@
 #include "sfml/SfmlDisplay.hpp"
 #include "ncurses/NcursesDisplay.hpp"
 #include "modules/Hostname.hpp"
+#include "modules/DateTime.hpp"
+#include "modules/CpuModule.hpp"
 
 int main(int ac, char **av)
 {
@@ -17,23 +19,27 @@ int main(int ac, char **av)
 
     if (ac > 1 && std::string(av[1]) == "-sfml") {
         display = new SfmlDisplay();
-    } else {
-        display = new NcursesDisplay();
+    // } else {
+    //     display = new NcursesDisplay();
     }
 
     std::vector<Krell::IModule *> modules;
     modules.push_back(new Hostname());
+    modules.push_back(new DateTime());
+    modules.push_back(new CpuModule());
 
     display->init();
+    sf::Clock updateClock;
     bool run = true;
 
     while (run) {
-        for (auto &module : modules) {
-            module->update();
+        if (updateClock.getElapsedTime().asMilliseconds() >= 1000) {
+            for (auto &module : modules)
+                module->update();
+            updateClock.restart();
         }
 
         display->display(modules);
-
         run = display->handle_inputs();
     }
     display->stop();

@@ -7,6 +7,9 @@
 
 # FILES
 SRC	=	src/main.cpp \
+		src/sfml/SfmlDisplay.cpp \
+		src/sfml/Display.cpp \
+		src/sfml/Inputs.cpp \
 
 # COLORS
 RED=\033[31m
@@ -20,8 +23,9 @@ OBJ	=	$(SRC:.cpp=.o)
 NAME = MyGKrellm
 
 # COMPILER
-CC	=	clang++
+CC	=	g++
 CFLAGS	=	-std=c++20 -Wall -Wextra -Werror -I src/
+SFMLFLAGS = $(shell pkg-config --libs sfml-graphics sfml-window sfml-system) -lncurses
 
 # PRINT COMPILATION
 %.o: %.cpp
@@ -37,7 +41,7 @@ pre-compile:
 
 # LINKING
 $(NAME): $(OBJ)
-	@$(CC) $(OBJ) -o $(NAME)
+	@$(CC) $(OBJ) -o $(NAME) $(SFMLFLAGS)
 	@echo "$(WHITE)$(BOLD)[READY]:$(RESET)$(WHITE)\t$(NAME)$(RESET)"
 
 # CLEAN OBJECT FILES

@@ -4,13 +4,21 @@
 ** File description:
 ** SfmlDisplay
 */
-
 #ifndef SFMLDISPLAY_HPP_
 #define SFMLDISPLAY_HPP_
-#include <SFML/Graphics.hpp>
-#include "interfaces/IDisplay.hpp"
 
-class SfmlDisplay : public Krell::IDisplay{
+#include "interfaces/IDisplay.hpp"
+#include "SfmlConfig.hpp"
+#include <vector>
+
+struct ModuleWrapper {
+    Krell::IModule* module;
+    sf::RectangleShape background;
+    bool isVisible = true;
+    bool isDragging = false;
+};
+
+class SfmlDisplay : public Krell::IDisplay {
     public:
         SfmlDisplay();
         ~SfmlDisplay();
@@ -20,8 +28,20 @@ class SfmlDisplay : public Krell::IDisplay{
         void display(const std::vector<Krell::IModule *> &modules) override;
         bool handle_inputs() override;
 
-    protected:
     private:
+        sf::RenderWindow _window;
+        sf::Font _font;
+        std::vector<ModuleWrapper> _modules;
+        
+        int _draggedIdx = -1;
+        int _targetIdx = -1;
+        sf::Vector2f _dragOffset;
+
+        void syncModules(const std::vector<Krell::IModule *> &modules);
+        void renderStaticStack(float &currentY, sf::Vector2i mousePos);
+        void renderPreviewLine();
+        void renderDraggedModule(sf::Vector2i mousePos);
+        void drawModule(ModuleWrapper &wrapper, sf::Vector2f pos);
 };
 
-#endif /* !SFMLDISPLAY_HPP_ */
+#endif
