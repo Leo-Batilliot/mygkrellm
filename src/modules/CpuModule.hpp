@@ -19,9 +19,11 @@ class CpuModule : public Krell::IModule {
     private:
         std::string _name;
         std::map<std::string, std::string> _data;
+        std::map<std::string, std::string> _coresUsage;
         
         unsigned long long _prevTotal = 0;
         unsigned long long _prevIdle = 0;
+        std::map<std::string, std::pair<unsigned long long, unsigned long long>> _prevCores;
 
         std::string trim(const std::string& str) {
             size_t first = str.find_first_not_of(" \t");
@@ -38,6 +40,7 @@ class CpuModule : public Krell::IModule {
         {
             updateCpuInfo();
             updateCpuUsage();
+            updateCoresUsage();
         }
 
         void updateCpuInfo()
@@ -101,8 +104,48 @@ class CpuModule : public Krell::IModule {
             _data["Usage"] = std::to_string(usageInt) + "." + std::to_string(usageDec) + "%";
         }
 
-        std::string getName() const override { return _name; }
-        const std::map<std::string, std::string> &getData() const override { return _data; }
+        void updateCoresUsage()
+        {
+            std::ifstream file("/proc/stat");
+            std::string line;
+
+            if (!file.is_open()) return;
+
+            while (std::getline(file, line)) {
+                if (line.compare(0, 3, "cpu") == 0 && isdigit(line[3])) {
+                    std::stringstream ss(line);
+                    std::string cpuLabel;
+                    unsigned long long user, nice, system, idle, iowait, irq, softirq, steal;
+                    
+                    ss >> cpuLabel >> user >> nice >> system >> idle >> iowait >> irq >> softirq >> steal;
+
+                    unsigned long long currentIdle = idle + iowait;
+                    unsigned long long currentTotal = user + nice + system + idle + iowait + irq + softirq + steal;
+
+                    unsigned long long prevIdle = _prevCores[cpuLabel].second;
+                    unsigned long long prevTotal = _prevCores[cpuLabel].first;
+
+                    unsigned long long diffIdle = currentIdle - prevIdle;
+                    unsigned long long diffTotal = currentTotal - prevTotal;
+
+                    float usage = 0.0f;
+                    if (diffTotal > 0) {
+                        usage = (100.0f * (diffTotal - diffIdle)) / diffTotal;
+                    }
+
+                    _prevCores[cpuLabel] = {currentTotal, currentIdle};
+
+                    int usageInt = (int)usage;
+                    int usageDec = (int)((usage - usageInt) * 10);
+                    _coresUsage[cpuLabel] = std::to_string(usageInt) + "." + std::to_string(usageDec) + "%";
+                }
+            }
+        }
+
+        std::string getName() const override {return _name;}
+        const std::map<std::string, std::string> &getData() const override {return _data;}
+        std::map<std::string, std::string> &getCoreUsage() {return _coresUsage;}
+
 };
 
 #endif /* !CPUMODULE_HPP_ */
