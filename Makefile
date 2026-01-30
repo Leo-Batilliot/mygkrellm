@@ -20,7 +20,7 @@ OBJ	=	$(SRC:.cpp=.o)
 NAME = MyGKrellm
 
 # COMPILER
-CC	=	clang++
+CC	=	g++
 CFLAGS	=	-std=c++20 -Wall -Wextra -Werror -I src/
 
 # PRINT COMPILATION

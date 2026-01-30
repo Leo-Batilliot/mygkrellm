@@ -10,6 +10,11 @@
 #include "sfml/SfmlDisplay.hpp"
 #include "ncurses/NcursesDisplay.hpp"
 #include "modules/Hostname.hpp"
+#include "modules/OSModule.hpp"
+#include "modules/DateTime.hpp"
+#include "modules/CpuModule.hpp"
+#include "modules/RamModule.hpp"
+#include "modules/NetworkModule.hpp"
 
 int main(int ac, char **av)
 {
@@ -23,6 +28,11 @@ int main(int ac, char **av)
 
     std::vector<Krell::IModule *> modules;
     modules.push_back(new Hostname());
+    modules.push_back(new OSModule());
+    modules.push_back(new DateTime());
+    modules.push_back(new CpuModule());
+    modules.push_back(new RamModule());
+    modules.push_back(new NetworkModule());
 
     display->init();
     bool run = true;
