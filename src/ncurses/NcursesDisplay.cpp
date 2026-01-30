@@ -1,5 +1,7 @@
 #include <ncurses.h>
 #include "ncurses/NcursesDisplay.hpp"
+#include "modules/Data_time.hpp"
+#include "iostream"
 
 NcursesDisplay::NcursesDisplay() : _window(nullptr)
 {
@@ -13,14 +15,15 @@ void NcursesDisplay::init()
 {
     initscr();
     noecho();
+    raw();
     curs_set(0);
-    keypad(stdscr, TRUE);
-    nodelay(stdscr, TRUE);
 
     int h;
     int w;
     getmaxyx(stdscr, h, w);
     _window = newwin(h, w, 0, 0);
+    nodelay(_window, TRUE);  // Activer nodelay sur _window aussi
+    keypad(_window, TRUE);   // Activer keypad sur _window aussi
 }
 
 void NcursesDisplay::stop()
@@ -44,9 +47,16 @@ void NcursesDisplay::display(const std::vector<Krell::IModule *> &modules)
     box(_window, 0, 0);
     mvwprintw(_window, 1, 2, "Ncurses Display (press q to quit) - %dx%d", w, h);
 
-    (void)modules;
-
     wrefresh(_window);
+
+    for (auto module : modules) {
+        if (module->getName() == "Time") {
+            Data_time* timeModule = dynamic_cast<Data_time*>(module);
+            if (timeModule) {
+                timeModule->display_time();
+            }
+        }
+    }
 }
 
 bool NcursesDisplay::handle_inputs()

@@ -10,6 +10,7 @@
 #include "sfml/SfmlDisplay.hpp"
 #include "ncurses/NcursesDisplay.hpp"
 #include "modules/Hostname.hpp"
+#include "modules/Data_time.hpp"
 
 int main(int ac, char **av)
 {
@@ -23,6 +24,7 @@ int main(int ac, char **av)
 
     std::vector<Krell::IModule *> modules;
     modules.push_back(new Hostname());
+    modules.push_back(new Data_time());
 
     display->init();
     bool run = true;
@@ -35,6 +37,7 @@ int main(int ac, char **av)
         display->display(modules);
 
         run = display->handle_inputs();
+        usleep(100000); // a potentiellement supprimer
     }
     display->stop();
 
