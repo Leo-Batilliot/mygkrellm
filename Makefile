@@ -32,7 +32,7 @@ NAME = MyGKrellm
 # COMPILER
 CC	=	g++
 CFLAGS	=	-std=c++20 -Wall -Wextra -Werror -I src/
-SFMLFLAGS = $(shell pkg-config --libs sfml-graphics sfml-window sfml-system) -lncurses
+SFMLFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lncurses
 
 # PRINT COMPILATION
 %.o: %.cpp
