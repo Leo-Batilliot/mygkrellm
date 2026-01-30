@@ -7,6 +7,8 @@
 
 # FILES
 SRC	=	src/main.cpp \
+		src/sfml/SfmlDisplay.cpp \
+		src/ncurses/NcursesDisplay.cpp \
 
 # COLORS
 RED=\033[31m
@@ -20,8 +22,9 @@ OBJ	=	$(SRC:.cpp=.o)
 NAME = MyGKrellm
 
 # COMPILER
-CC	=	clang++
+CC	=	g++
 CFLAGS	=	-std=c++20 -Wall -Wextra -Werror -I src/
+LDFLAGS	=	-lncurses
 
 # PRINT COMPILATION
 %.o: %.cpp
@@ -37,7 +40,7 @@ pre-compile:
 
 # LINKING
 $(NAME): $(OBJ)
-	@$(CC) $(OBJ) -o $(NAME)
+	@$(CC) $(OBJ) $(LDFLAGS) -o $(NAME)
 	@echo "$(WHITE)$(BOLD)[READY]:$(RESET)$(WHITE)\t$(NAME)$(RESET)"
 
 # CLEAN OBJECT FILES
