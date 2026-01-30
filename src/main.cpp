@@ -10,8 +10,16 @@
 #include "sfml/SfmlDisplay.hpp"
 #include "ncurses/NcursesDisplay.hpp"
 #include "modules/Hostname.hpp"
+<<<<<<< HEAD
 #include "modules/DateTime.hpp"
 #include "modules/CpuModule.hpp"
+=======
+#include "modules/OSModule.hpp"
+#include "modules/DateTime.hpp"
+#include "modules/CpuModule.hpp"
+#include "modules/RamModule.hpp"
+#include "modules/NetworkModule.hpp"
+>>>>>>> 14b695a (feat: add all modules + network bonus)
 
 int main(int ac, char **av)
 {
@@ -25,8 +33,16 @@ int main(int ac, char **av)
 
     std::vector<Krell::IModule *> modules;
     modules.push_back(new Hostname());
+<<<<<<< HEAD
     modules.push_back(new DateTime());
     modules.push_back(new CpuModule());
+=======
+    modules.push_back(new OSModule());
+    modules.push_back(new DateTime());
+    modules.push_back(new CpuModule());
+    modules.push_back(new RamModule());
+    modules.push_back(new NetworkModule());
+>>>>>>> 14b695a (feat: add all modules + network bonus)
 
     display->init();
     sf::Clock updateClock;

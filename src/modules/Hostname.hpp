@@ -11,7 +11,7 @@
 #include <unistd.h>
 #include <limits.h>
 
-class Hostname : public Krell::IModule{
+class Hostname : public Krell::IModule {
     private :
         std::string _name;
         std::map<std::string, std::string> _data;
