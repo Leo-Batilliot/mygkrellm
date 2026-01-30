@@ -4,21 +4,21 @@
 #include <SFML/Graphics.hpp>
 
 // Window Settings
-#define WIN_WIDTH 500
+#define WIN_WIDTH 600
 #define WIN_HEIGHT 800
 #define WIN_TITLE "MyGKrellm"
 #define FRAME_LIMIT 60
 
 // Visual Settings
 #define MOD_WIDTH WIN_WIDTH - 40
-#define MOD_MARGIN 15
+#define MOD_MARGIN 20
 #define START_Y 20
 #define START_X 20
 
 // Module Settings
 #define COLOR_LABEL sf::Color::White
 #define COLOR_VALUE sf::Color::Green
-#define VALUE_X_OFFSET 170
+#define VALUE_X_OFFSET 190
 
 // Colors
 #define COLOR_BG sf::Color(30, 30, 30)

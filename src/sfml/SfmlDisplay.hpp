@@ -42,6 +42,14 @@ class SfmlDisplay : public Krell::IDisplay {
         void renderPreviewLine();
         void renderDraggedModule(sf::Vector2i mousePos);
         void drawModule(ModuleWrapper &wrapper, sf::Vector2f pos);
+        void drawHostname(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
+        void drawDateTime(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
+        void drawCpu(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
+        void drawNetwork(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
+        void drawOS(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
+        void drawRam(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
+
+        std::string safeGet(const std::map<std::string, std::string>& data, const std::string& key);
 };
 
 #endif

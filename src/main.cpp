@@ -37,6 +37,8 @@ int main(int ac, char **av)
     sf::Clock updateClock;
     bool run = true;
 
+    for (auto &module : modules)
+        module->update();
     while (run) {
         if (updateClock.getElapsedTime().asMilliseconds() >= 1000) {
             for (auto &module : modules)

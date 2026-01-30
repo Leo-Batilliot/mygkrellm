@@ -10,6 +10,13 @@ SRC	=	src/main.cpp \
 		src/sfml/SfmlDisplay.cpp \
 		src/sfml/Display.cpp \
 		src/sfml/Inputs.cpp \
+		src/sfml/DrawCpu.cpp \
+		src/sfml/DrawDateTime.cpp \
+		src/sfml/DrawHostname.cpp \
+		src/sfml/DrawNetwork.cpp \
+		src/sfml/DrawOS.cpp \
+		src/sfml/DrawRam.cpp \
+		src/sfml/SfmlUtils.cpp \
 
 # COLORS
 RED=\033[31m
