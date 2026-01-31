@@ -9,14 +9,11 @@
 #define NCURSESDISPLAY_HPP_
 #include "ncurses.h"
 #include "interfaces/IDisplay.hpp"
+#include "RamBox.hpp"
 
 class NcursesDisplay : public Krell::IDisplay {
     public:
-        NcursesDisplay() {
-            init_pair(1, COLOR_RED, COLOR_BLACK);
-            init_pair(2, COLOR_YELLOW, COLOR_BLACK);
-            init_pair(3, COLOR_GREEN, COLOR_BLACK);
-        };
+        NcursesDisplay() :  _window(nullptr), _timeWindow(nullptr), _hostnameWindow(nullptr), _ramBox(nullptr) {};
         ~NcursesDisplay() override;
 
         void init() override;
@@ -29,6 +26,7 @@ class NcursesDisplay : public Krell::IDisplay {
         WINDOW *_window;
         WINDOW *_timeWindow;
         WINDOW *_hostnameWindow;
+        RamBox *_ramBox;
 };
 
 #endif /* !NCURSESDISPLAY_HPP_ */

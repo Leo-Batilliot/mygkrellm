@@ -25,8 +25,8 @@ int main(int ac, char **av)
     if (ac > 1 && std::string(av[1]) == "-sfml") {
         display = new SfmlDisplay();
         display_type = 1;
-    // } else {
-    //     display = new NcursesDisplay();
+    } else {
+        display = new NcursesDisplay();
     }
 
     std::vector<Krell::IModule *> modules;
@@ -62,6 +62,7 @@ int main(int ac, char **av)
                 display = new NcursesDisplay();
             else
                 display = new SfmlDisplay();
+            display_type = (display_type + 1) % 2;
             display->init();
         }
     }
