@@ -11,11 +11,21 @@
 #include "interfaces/IModule.hpp"
 #include <sys/utsname.h>
 #include <iostream>
+#include <fstream>
 
 class OSModule : public Krell::IModule {
     private:
         std::string _name;
         std::map<std::string, std::string> _data;
+
+
+        std::string cleanString(std::string str)
+        {
+            if (str.size() > 1 && str.front() == '"' && str.back() == '"') {
+                return str.substr(1, str.size() - 2);
+            }
+            return str;
+        }
 
     public:
         OSModule() : _name("OS & Kernel") {update();}
@@ -33,18 +43,22 @@ class OSModule : public Krell::IModule {
             std::ifstream file("/etc/os-release");
             std::string line;
             std::string osName = "Linux (Unknown)";
+            std::string osVersion = "";
             if (file.is_open()) {
                 while (std::getline(file, line)) {
                     if (line.find("NAME=") == 0) {
-                        osName = line.substr(5);
-                        if (osName.size() > 1 && osName.front() == '"' && osName.back() == '"') {
-                            osName = osName.substr(1, osName.size() - 2);
-                        }
-                        break;
+                        osName = cleanString(line.substr(5));
+                    }
+                    if (line.find("VERSION=") == 0) {
+                        osVersion = cleanString(line.substr(8));
                     }
                 }
             }
-            _data["Operating system"] = osName;
+            if (!osVersion.empty()) {
+                _data["Operating system"] = osName + " " + osVersion;
+            } else {
+                _data["Operating system"] = osName;
+            }
         }
 
         std::string getName() const override {return _name;}
