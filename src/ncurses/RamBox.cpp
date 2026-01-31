@@ -9,7 +9,10 @@
 
 RamBox::RamBox() : _RamWin(nullptr) {}
 
-RamBox::~RamBox() {}
+RamBox::~RamBox() {
+    if (_RamWin)
+        delwin(_RamWin);
+}
 
 void RamBox::displayRamMod() {
      if (!_RamWin)
