@@ -11,12 +11,13 @@
     #include <iostream>
     #include <string>
     #include <ncurses.h>
+    #include "IBox.hpp"
     #include "modules/CpuModule.hpp"
 
-class CpuBox : public CpuModule{
+class CpuBox : public IBox {
     private:
         /* Attributs */
-        WINDOW *_CpuWin;
+        WINDOW *_box;
 
         /* Methods */
 
@@ -27,7 +28,7 @@ class CpuBox : public CpuModule{
 
     public:
         /* Const / Destr */
-        CpuBox();
+        CpuBox(int x, int y);
         ~CpuBox() override;
 
         /* Getters */
@@ -38,7 +39,8 @@ class CpuBox : public CpuModule{
 
         /* Methods */
 
-        void displayCpuMod();
+        void display(Krell::IModule *module) override;
+        WINDOW *getWin() const override;
 };
 
 #endif
