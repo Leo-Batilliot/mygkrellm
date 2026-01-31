@@ -64,7 +64,7 @@ void NcursesDisplay::display(const std::vector<Krell::IModule *> &modules)
 
     int h, w;
     getmaxyx(stdscr, h, w);
-    box(stdscr, 0, 0);
+    //box(stdscr, 0, 0);
     mvprintw(1, 2, "Ncurses Display (press q to quit, s to switch) - %dx%d", w, h);
     
     wnoutrefresh(stdscr);
