@@ -30,11 +30,11 @@ void NcursesDisplay::init()
     _hostnameWindow = newwin(5, 72, 7, 2);
 
     _boxes.push_back(new OsBox(2, 12));
-    _boxes.push_back(new CpuBox(80, 2));
-    _boxes.push_back(new RamBox(2, 18));
-    _boxes.push_back(new BatteryBox(2, 25));
-    _boxes.push_back(new UptimeBox(2, 32));
-    _boxes.push_back(new TemperatureBox(2, 39));
+    _boxes.push_back(new CpuBox(80, 12));
+    _boxes.push_back(new RamBox(2, 17));
+    _boxes.push_back(new BatteryBox(2, 24));
+    _boxes.push_back(new UptimeBox(2, 31));
+    _boxes.push_back(new TemperatureBox(80, 2));
 
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
