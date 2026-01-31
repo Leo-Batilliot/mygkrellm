@@ -24,6 +24,9 @@ SRC	=	src/main.cpp \
 		src/ncurses/NcuresesDisplay.cpp \
 		src/ncurses/RamBox.cpp \
 		src/ncurses/CpuBox.cpp \
+		src/ncurses/OsBox.cpp \
+		src/ncurses/BatteryBox.cpp \
+		src/ncurses/UptimeBox.cpp \
 
 # COLORS
 RED=\033[31m

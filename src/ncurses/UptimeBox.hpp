@@ -15,6 +15,7 @@
 class UptimeBox : public IBox {
     private:
         /* Attributs */
+        WINDOW *_box;
 
         /* Methods */
 
