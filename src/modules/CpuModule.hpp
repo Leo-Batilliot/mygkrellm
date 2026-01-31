@@ -25,7 +25,8 @@ class CpuModule : public Krell::IModule {
         unsigned long long _prevIdle = 0;
         std::map<std::string, std::pair<unsigned long long, unsigned long long>> _prevCores;
 
-        std::string trim(const std::string& str) {
+        std::string trim(const std::string& str)
+        {
             size_t first = str.find_first_not_of(" \t");
             if (std::string::npos == first) return str;
             size_t last = str.find_last_not_of(" \t");

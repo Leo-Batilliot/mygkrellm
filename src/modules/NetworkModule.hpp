@@ -24,7 +24,8 @@ class NetworkModule : public Krell::IModule {
         unsigned long long _prevTxBytes = 0;
         bool _firstUpdate = true;
 
-        std::string formatSpeed(unsigned long long bytes) {
+        std::string formatSpeed(unsigned long long bytes)
+        {
             float speedKB = bytes / 1024.0f;
             float speedMB = speedKB / 1024.0f;
 

@@ -15,6 +15,7 @@
 #include "modules/CpuModule.hpp"
 #include "modules/RamModule.hpp"
 #include "modules/NetworkModule.hpp"
+#include "modules/BatteryModule.hpp"
 
 int main(int ac, char **av)
 {
@@ -33,6 +34,7 @@ int main(int ac, char **av)
     modules.push_back(new CpuModule());
     modules.push_back(new RamModule());
     modules.push_back(new NetworkModule());
+    modules.push_back(new BatteryModule());
 
     display->init();
     sf::Clock updateClock;

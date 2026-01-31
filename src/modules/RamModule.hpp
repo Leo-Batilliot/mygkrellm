@@ -19,7 +19,8 @@ class RamModule : public Krell::IModule {
         std::string _name;
         std::map<std::string, std::string> _data;
 
-        std::string formatSize(unsigned long long sizeKB) {
+        std::string formatSize(unsigned long long sizeKB)
+        {
             float sizeGB = sizeKB / (1024.0f * 1024.0f);
             float sizeMB = sizeKB / 1024.0f;
             
