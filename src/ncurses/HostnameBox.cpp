@@ -7,7 +7,7 @@
 
 #include "HostnameBox.hpp"
 
-HostnameBox::HostnameBox(int x, int y) : _box(newwin(5, 45, y, x)) {}
+HostnameBox::HostnameBox(int x, int y) : _box(newwin(5, 72, y, x)) {}
 
 HostnameBox::~HostnameBox()
 {

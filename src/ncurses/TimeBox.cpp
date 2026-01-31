@@ -7,7 +7,7 @@
 
 #include "TimeBox.hpp"
 
-TimeBox::TimeBox(int x, int y) : _box(newwin(5, 25, y, x)) {}
+TimeBox::TimeBox(int x, int y) : _box(newwin(5, 72, y, x)) {}
 
 TimeBox::~TimeBox()
 {
