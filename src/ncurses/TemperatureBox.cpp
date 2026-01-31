@@ -43,7 +43,7 @@ void TemperatureBox::display(Krell::IModule *module) {
     float currentTemp = std::stof(safeGet(data, "Temp"));
     
     _countPush++;
-    if (_countPush > 1500) {
+    if (_countPush > 60) {
         _prevData.push_back(currentTemp);
         _countPush = 0;
     }
@@ -56,9 +56,9 @@ void TemperatureBox::display(Krell::IModule *module) {
     wattron(_box, A_BOLD);
     mvwprintw(_box, 0, 4, "=");
     wattron(_box, COLOR_PAIR(1));
-    mvwprintw(_box, 0, 5, " TEMPERATURE ");
+    mvwprintw(_box, 0, 5, "TEMPERATURE");
     wattroff(_box, COLOR_PAIR(1));
-    mvwprintw(_box, 0, 18, "=");
+    mvwprintw(_box, 0, 16, "=");
     wattroff(_box, A_BOLD);
 
     mvwprintw(_box, 1, 3, "Current: %.1f°C", currentTemp);
