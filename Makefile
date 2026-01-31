@@ -9,6 +9,15 @@
 SRC	=	src/main.cpp \
 		src/sfml/SfmlDisplay.cpp \
 		src/ncurses/NcursesDisplay.cpp \
+		src/sfml/Display.cpp \
+		src/sfml/Inputs.cpp \
+		src/sfml/DrawCpu.cpp \
+		src/sfml/DrawDateTime.cpp \
+		src/sfml/DrawHostname.cpp \
+		src/sfml/DrawNetwork.cpp \
+		src/sfml/DrawOS.cpp \
+		src/sfml/DrawRam.cpp \
+		src/sfml/SfmlUtils.cpp \
 
 # COLORS
 RED=\033[31m
@@ -24,7 +33,7 @@ NAME = MyGKrellm
 # COMPILER
 CC	=	g++
 CFLAGS	=	-std=c++20 -Wall -Wextra -Werror -I src/
-LDFLAGS	=	-lncurses
+SFMLFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lncurses
 
 # PRINT COMPILATION
 %.o: %.cpp
@@ -40,7 +49,7 @@ pre-compile:
 
 # LINKING
 $(NAME): $(OBJ)
-	@$(CC) $(OBJ) $(LDFLAGS) -o $(NAME)
+	@$(CC) $(OBJ) -o $(NAME) $(SFMLFLAGS)
 	@echo "$(WHITE)$(BOLD)[READY]:$(RESET)$(WHITE)\t$(NAME)$(RESET)"
 
 # CLEAN OBJECT FILES

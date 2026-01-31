@@ -12,7 +12,7 @@
 #include <limits.h>
 #include "ncurses.h"
 
-class Hostname : public Krell::IModule{
+class Hostname : public Krell::IModule {
     private :
         WINDOW *_timeWindow;
         std::string _name;

@@ -11,6 +11,12 @@
 #include "ncurses/NcursesDisplay.hpp"
 #include "modules/Hostname.hpp"
 #include "modules/Data_time.hpp"
+#include "modules/OSModule.hpp"
+#include "modules/DateTime.hpp"
+#include "modules/CpuModule.hpp"
+#include "modules/RamModule.hpp"
+#include "modules/NetworkModule.hpp"
+#include "modules/BatteryModule.hpp"
 
 int main(int ac, char **av)
 {
@@ -18,24 +24,34 @@ int main(int ac, char **av)
 
     if (ac > 1 && std::string(av[1]) == "-sfml") {
         display = new SfmlDisplay();
-    } else {
-        display = new NcursesDisplay();
+    // } else {
+    //     display = new NcursesDisplay();
     }
 
     std::vector<Krell::IModule *> modules;
     modules.push_back(new Hostname());
     modules.push_back(new Data_time());
+    modules.push_back(new OSModule());
+    modules.push_back(new DateTime());
+    modules.push_back(new CpuModule());
+    modules.push_back(new RamModule());
+    modules.push_back(new NetworkModule());
+    modules.push_back(new BatteryModule());
 
     display->init();
+    sf::Clock updateClock;
     bool run = true;
 
+    for (auto &module : modules)
+        module->update();
     while (run) {
-        for (auto &module : modules) {
-            module->update();
+        if (updateClock.getElapsedTime().asMilliseconds() >= 1000) {
+            for (auto &module : modules)
+                module->update();
+            updateClock.restart();
         }
 
         display->display(modules);
-
         run = display->handle_inputs();
         usleep(100000); // a potentiellement supprimer
     }
