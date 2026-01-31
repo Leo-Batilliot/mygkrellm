@@ -19,7 +19,7 @@ WINDOW *CpuBox::getWin() const {
 }
 
 std::string CpuBox::getModuleNeeded() const {
-    return "Cpu";
+    return "CPU";
 }
 
 void CpuBox::display(Krell::IModule *module) {
@@ -30,8 +30,6 @@ void CpuBox::display(Krell::IModule *module) {
         return;
     const std::map<std::string, std::string> data = cpuModule->getData();
     std::string model = data.at("Model");
-    double frequency = std::stod(data.at("Frequency"));
-    float percent = std::stof(data.at("Percent"));
 
 
     werase(_box);
@@ -74,5 +72,5 @@ void CpuBox::display(Krell::IModule *module) {
         col++;
     }
 
-    wrefresh(_box);
+    wnoutrefresh(_box);
 }

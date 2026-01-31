@@ -20,6 +20,7 @@ SRC	=	src/main.cpp \
 		src/sfml/SfmlUtils.cpp \
 		src/ncurses/NcuresesDisplay.cpp \
 		src/ncurses/RamBox.cpp \
+		src/ncurses/CpuBox.cpp \
 
 # COLORS
 RED=\033[31m

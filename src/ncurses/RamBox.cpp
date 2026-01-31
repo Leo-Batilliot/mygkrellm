@@ -15,7 +15,7 @@ RamBox::~RamBox() {
 }
 
 std::string RamBox::getModuleNeeded() const {
-    return "Ram";
+    return "RAM";
 }
 
 WINDOW *RamBox::getWin() const {

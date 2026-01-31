@@ -4,6 +4,7 @@
 #include "modules/Hostname.hpp"
 #include "iostream"
 #include "ncurses/RamBox.hpp"
+#include "ncurses/CpuBox.hpp"
 
 NcursesDisplay::~NcursesDisplay()
 {
@@ -23,8 +24,11 @@ void NcursesDisplay::init()
 
     _timeWindow = newwin(5, 40, 2, 2);
     _hostnameWindow = newwin(5, 40, 7, 2);
-    _ramBox = new RamBox(2, 12);
-    
+
+    // create boxes and register them
+    _boxes.push_back(new CpuBox(2, 12));
+    _boxes.push_back(new RamBox(2, 29));
+
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
 }
@@ -43,10 +47,11 @@ void NcursesDisplay::stop()
         delwin(_hostnameWindow);
         _hostnameWindow = nullptr;
     }
-    if (_ramBox) {
-        delete _ramBox;
-        _ramBox = nullptr;
+    for (IBox *b : _boxes) {
+        if (b)
+            delete b;
     }
+    _boxes.clear();
     endwin();
 }
 
@@ -78,12 +83,8 @@ void NcursesDisplay::display(const std::vector<Krell::IModule *> &modules)
             mvwprintw(_timeWindow, 2, 1, "Date: %s", data.at("Date").c_str());
             wnoutrefresh(_timeWindow);
         }
-        if (module->getName() == "RAM") {
-            if (_ramBox)
-                _ramBox->display(module);
-        }
         for (IBox *box : _boxes) {
-            if (box->getModuleNeeded() == module->getName()) {
+            if (box && box->getModuleNeeded() == module->getName()) {
                 box->display(module);
             }
         }
