@@ -15,6 +15,7 @@
 class OsBox : public IBox {
     private:
         /* Attributs */
+        WINDOW *_box;
 
         /* Methods */
 
