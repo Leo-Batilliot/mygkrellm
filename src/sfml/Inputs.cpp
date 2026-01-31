@@ -7,7 +7,7 @@ int SfmlDisplay::handle_inputs()
         if (event.type == sf::Event::Closed)
             return 1;
 
-        if (event.type == sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::S)
             return 2;
 
         sf::Vector2i mousePos = sf::Mouse::getPosition(_window);

@@ -3,8 +3,7 @@
 #include "modules/DateTime.hpp"
 #include "modules/Hostname.hpp"
 #include "iostream"
-
-NcursesDisplay::NcursesDisplay() : _window(nullptr), _timeWindow(nullptr), _hostnameWindow(nullptr) {}
+#include "ncurses/RamBox.hpp"
 
 NcursesDisplay::~NcursesDisplay()
 {
@@ -16,17 +15,18 @@ void NcursesDisplay::init()
     noecho();
     raw();
     curs_set(0);
+    start_color();
+    use_default_colors(); 
+    init_pair(1, COLOR_RED, -1);
+    init_pair(2, COLOR_YELLOW, -1);
+    init_pair(3, COLOR_GREEN, -1);
 
-    int h;
-    int w;
-    getmaxyx(stdscr, h, w);
-    _window = newwin(h, w, 0, 0);
-    _timeWindow = newwin(5, 20, 2, 2);
-    _hostnameWindow = newwin(5, 30, 7, 2);
-    _boxes.push_back(new CpuBox(2, 12));
-    _boxes.push_back(new RamBox(2, 29));
-    nodelay(_window, TRUE);
-    keypad(_window, TRUE);
+    _timeWindow = newwin(5, 40, 2, 2);
+    _hostnameWindow = newwin(5, 40, 7, 2);
+    _ramBox = new RamBox(2, 12);
+    
+    keypad(stdscr, TRUE);
+    nodelay(stdscr, TRUE);
 }
 
 void NcursesDisplay::stop()
@@ -43,39 +43,44 @@ void NcursesDisplay::stop()
         delwin(_hostnameWindow);
         _hostnameWindow = nullptr;
     }
+    if (_ramBox) {
+        delete _ramBox;
+        _ramBox = nullptr;
+    }
     endwin();
 }
 
 void NcursesDisplay::display(const std::vector<Krell::IModule *> &modules)
 {
-    int h;
-    int w;
+    erase(); 
+
+    int h, w;
     getmaxyx(stdscr, h, w);
-
-    wresize(_window, h, w);
-    werase(_window);
-
-    box(_window, 0, 0);
-    mvwprintw(_window, 1, 2, "Ncurses Display (press q to quit) - %dx%d", w, h);
-
-    wrefresh(_window);
+    box(stdscr, 0, 0);
+    mvprintw(1, 2, "Ncurses Display (press q to quit, s to switch) - %dx%d", w, h);
+    
+    wnoutrefresh(stdscr);
 
     for (auto module : modules) {
-        if (module->getName() == "Date & Time") {
-            std::map<std::string, std::string> data = module->getData();
-            werase(_timeWindow);
-            box(_timeWindow, 0, 0);
-            mvwprintw(_timeWindow, 1, 1, "Time: %s", data.at("Date").c_str());
-            mvwprintw(_timeWindow, 2, 1, "Date: %s", data.at("Time").c_str());
-            wrefresh(_timeWindow);
-        }
         if (module->getName() == "Hostname") {
-            std::map<std::string, std::string> data = module->getData();
+            auto data = module->getData();
             werase(_hostnameWindow);
             box(_hostnameWindow, 0, 0);
             mvwprintw(_hostnameWindow, 1, 1, "Hostname: %s", data.at("Hostname").c_str());
             mvwprintw(_hostnameWindow, 2, 1, "Username: %s", data.at("Username").c_str());
-            wrefresh(_hostnameWindow);
+            wnoutrefresh(_hostnameWindow);
+        }
+        if (module->getName() == "Date & Time") {
+            auto data = module->getData();
+            werase(_timeWindow);
+            box(_timeWindow, 0, 0);
+            mvwprintw(_timeWindow, 1, 1, "Time: %s", data.at("Time").c_str());
+            mvwprintw(_timeWindow, 2, 1, "Date: %s", data.at("Date").c_str());
+            wnoutrefresh(_timeWindow);
+        }
+        if (module->getName() == "RAM") {
+            if (_ramBox)
+                _ramBox->display(module);
         }
         for (IBox *box : _boxes) {
             if (box->getModuleNeeded() == module->getName()) {
@@ -83,19 +88,14 @@ void NcursesDisplay::display(const std::vector<Krell::IModule *> &modules)
             }
         }
     }
-    //usleep(1000);
+    doupdate();
 }
 
-bool NcursesDisplay::handle_inputs()
+int NcursesDisplay::handle_inputs()
 {
-    int ch = wgetch(_window);
+    int ch = getch();
 
-    if (ch == 'q')
-        return false;
-
-    if (ch == KEY_RESIZE) {
-        return true;
-    }
-
-    return true;
+    if (ch == 'q') return 1;
+    if (ch == 's') return 2;
+    return 0;
 }
