@@ -25,7 +25,7 @@ namespace Krell {
             virtual void display(const std::vector<IModule *> &modules) = 0;
             
             // gère les input (return false si on doit stopper le programme)
-            virtual bool handle_inputs() = 0;
+            virtual int handle_inputs() = 0;
         protected:
         private:
     };

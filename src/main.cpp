@@ -20,9 +20,11 @@
 int main(int ac, char **av)
 {
     Krell::IDisplay *display = nullptr;
+    int display_type = 0;
 
     if (ac > 1 && std::string(av[1]) == "-sfml") {
         display = new SfmlDisplay();
+        display_type = 1;
     // } else {
     //     display = new NcursesDisplay();
     }
@@ -38,11 +40,11 @@ int main(int ac, char **av)
 
     display->init();
     sf::Clock updateClock;
-    bool run = true;
+    int res = 0;
 
     for (auto &module : modules)
         module->update();
-    while (run) {
+    while (true) {
         if (updateClock.getElapsedTime().asMilliseconds() >= 1000) {
             for (auto &module : modules)
                 module->update();
@@ -50,7 +52,18 @@ int main(int ac, char **av)
         }
 
         display->display(modules);
-        run = display->handle_inputs();
+        res = display->handle_inputs();
+        if (res == 1)
+            break;
+        if (res == 2) {
+            display->stop();
+            delete display;
+            if (display_type == 1)
+                display = new NcursesDisplay();
+            else
+                display = new SfmlDisplay();
+            display->init();
+        }
     }
     display->stop();
 

@@ -26,7 +26,7 @@ class SfmlDisplay : public Krell::IDisplay {
         void init() override;
         void stop() override;
         void display(const std::vector<Krell::IModule *> &modules) override;
-        bool handle_inputs() override;
+        int handle_inputs() override;
 
     private:
         sf::RenderWindow _window;
@@ -37,17 +37,23 @@ class SfmlDisplay : public Krell::IDisplay {
         int _targetIdx = -1;
         sf::Vector2f _dragOffset;
 
+        sf::View _view;
+        float _scrollY = 0.0f;
+        const float _scrollSpeed = 20.0f;
+        float _maxScrollY = 0.0f;
+
         void syncModules(const std::vector<Krell::IModule *> &modules);
-        void renderStaticStack(float &currentY, sf::Vector2i mousePos);
+        void renderStaticStack(float &currentY, sf::Vector2i mousePos, float width, float startX);
         void renderPreviewLine();
-        void renderDraggedModule(sf::Vector2i mousePos);
-        void drawModule(ModuleWrapper &wrapper, sf::Vector2f pos);
+        void renderDraggedModule(sf::Vector2i mousePos, float width);
+        void drawModule(ModuleWrapper &wrapper, sf::Vector2f pos, float width);
         void drawHostname(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
         void drawDateTime(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
-        void drawCpu(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
+        void drawCpu(Krell::IModule *module, const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
         void drawNetwork(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
         void drawOS(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
         void drawRam(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
+        void drawBattery(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
 
         std::string safeGet(const std::map<std::string, std::string>& data, const std::string& key);
 };
