@@ -82,6 +82,11 @@ void NcursesDisplay::display(const std::vector<Krell::IModule *> &modules)
             if (_ramBox)
                 _ramBox->display(module);
         }
+        for (IBox *box : _boxes) {
+            if (box->getModuleNeeded() == module->getName()) {
+                box->display(module);
+            }
+        }
     }
     doupdate();
 }

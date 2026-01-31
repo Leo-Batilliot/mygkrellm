@@ -39,6 +39,7 @@ class RamBox : public IBox {
         /* Methods */
         void display(Krell::IModule *module) override;
         WINDOW *getWin() const override;
+        std::string getModuleNeeded() const override;
 };
 
 #endif

@@ -27,6 +27,7 @@ class NcursesDisplay : public Krell::IDisplay {
         WINDOW *_timeWindow;
         WINDOW *_hostnameWindow;
         RamBox *_ramBox;
+        std::vector<IBox*> _boxes;
 };
 
 #endif /* !NCURSESDISPLAY_HPP_ */
