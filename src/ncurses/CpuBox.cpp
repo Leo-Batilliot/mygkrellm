@@ -9,7 +9,10 @@
 
 CpuBox::CpuBox() : _CpuWin(nullptr) {}
 
-CpuBox::~CpuBox() {}
+CpuBox::~CpuBox() {
+    if (_CpuWin)
+        delwin(_CpuWin);
+}
 
 void CpuBox::displayCpuMod() {
      if (!_CpuWin)
