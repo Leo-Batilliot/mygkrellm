@@ -7,11 +7,7 @@
 
 #include "RamWindow.hpp"
 
-RamWindow::RamWindow() : _RamWin(nullptr) {
-    init_pair(1, COLOR_RED, COLOR_BLACK);
-    init_pair(2, COLOR_YELLOW, COLOR_BLACK);
-    init_pair(3, COLOR_GREEN, COLOR_BLACK);
-}
+RamWindow::RamWindow() : _RamWin(nullptr) {}
 
 RamWindow::~RamWindow() {}
 
