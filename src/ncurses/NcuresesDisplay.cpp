@@ -89,6 +89,8 @@ int NcursesDisplay::handle_inputs()
         _iterator++;
     if (ch == KEY_UP)
         _iterator--;
+    if (ch == ' ')
+        _iterator = 0;
     if (_iterator >= (int)_boxes.size()) {
         _iterator = 0;
     }
