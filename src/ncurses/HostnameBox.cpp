@@ -7,7 +7,7 @@
 
 #include "HostnameBox.hpp"
 
-HostnameBox::HostnameBox(int x, int y) : _box(newwin(5, 40, y, x)) {}
+HostnameBox::HostnameBox(int x, int y) : _box(newwin(5, 45, y, x)) {}
 
 HostnameBox::~HostnameBox()
 {
@@ -42,8 +42,8 @@ void HostnameBox::display(Krell::IModule *module) {
     mvwprintw(_box, 0, 15, "=");
     wattroff(_box, A_BOLD);
 
-    mvwprintw(_box, 1, 1, "Hostname: %s", hostname.c_str());
-    mvwprintw(_box, 2, 1, "Username: %s", username.c_str());
+    mvwprintw(_box, 1, 2, "Hostname: %s", hostname.c_str());
+    mvwprintw(_box, 2, 2, "Username: %s", username.c_str());
     
     wnoutrefresh(_box);
 }

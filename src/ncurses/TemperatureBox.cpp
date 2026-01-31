@@ -1,7 +1,7 @@
 #include "TemperatureBox.hpp"
 #include <algorithm>
 
-TemperatureBox::TemperatureBox(int x, int y) : _box(newwin(12, 75, y, x)), _countPush(0) {}
+TemperatureBox::TemperatureBox(int x, int y) : _box(newwin(12, 72, y, x)), _countPush(0) {}
 
 TemperatureBox::~TemperatureBox() {
     if (_box)

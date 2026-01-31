@@ -7,7 +7,7 @@
 
 #include "TimeBox.hpp"
 
-TimeBox::TimeBox(int x, int y) : _box(newwin(5, 40, y, x)) {}
+TimeBox::TimeBox(int x, int y) : _box(newwin(5, 25, y, x)) {}
 
 TimeBox::~TimeBox()
 {
@@ -42,8 +42,8 @@ void TimeBox::display(Krell::IModule *module) {
     mvwprintw(_box, 0, 18, "=");
     wattroff(_box, A_BOLD);
 
-    mvwprintw(_box, 1, 1, "Date: %s", date.c_str());
-    mvwprintw(_box, 2, 1, "Time: %s", time.c_str());
+    mvwprintw(_box, 1, 2, "Date: %s", date.c_str());
+    mvwprintw(_box, 2, 2, "Time: %s", time.c_str());
     
     wnoutrefresh(_box);
 }
