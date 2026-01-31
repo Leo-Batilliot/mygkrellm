@@ -8,6 +8,7 @@
 #include "ncurses/OsBox.hpp"
 #include "ncurses/BatteryBox.hpp"
 #include "ncurses/UptimeBox.hpp"
+#include "ncurses/TemperatureBox.hpp"
 
 NcursesDisplay::~NcursesDisplay()
 {
@@ -33,6 +34,7 @@ void NcursesDisplay::init()
     _boxes.push_back(new RamBox(2, 29));
     _boxes.push_back(new BatteryBox(2, 42));
     _boxes.push_back(new UptimeBox(2, 59));
+    _boxes.push_back(new TemperatureBox(2, 76));
 
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
