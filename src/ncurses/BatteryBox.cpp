@@ -68,5 +68,5 @@ void BatteryBox::display(Krell::IModule *module) {
         mvwprintw(_box, 4, 7 + barSize, "]    %s", levelStr.c_str());
     else
         mvwprintw(_box, 4, 7 + barSize, "]    %.1f%%", percent);
-    wrefresh(_box);
+    wnoutrefresh(_box);
 }

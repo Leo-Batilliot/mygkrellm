@@ -36,6 +36,7 @@ void CpuBox::display(Krell::IModule *module) {
     int height = 8 + (nbCores / 2) + (nbCores % 2);
     wresize(_box, height, 75);
 
+    wnoutrefresh(_box);
     werase(_box);
     box(_box, 0, 0);
     wattron(_box, A_BOLD);

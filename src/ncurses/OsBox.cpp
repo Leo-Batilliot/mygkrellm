@@ -33,10 +33,9 @@ void OsBox::display(Krell::IModule *module) {
     wattron(_box, COLOR_PAIR(1));
     mvwprintw(_box, 0, 5, " OS & Kernel ");
     wattroff(_box, COLOR_PAIR(1));
-    mvwprintw(_box, 0, 19, "=");
+    mvwprintw(_box, 0, 18, "=");
     wattroff(_box, A_BOLD);
-    mvwprintw(_box, 1, 2, " %s ", module->getName().c_str());
-    int line = 2;
+    int line = 1;
     for (auto const& [key, value] : data) {
         wattron(_box, A_BOLD);
         mvwprintw(_box, line, 2, "%s:", key.c_str());
@@ -44,5 +43,5 @@ void OsBox::display(Krell::IModule *module) {
         mvwprintw(_box, line, 2 + key.length() + 2, "%s", value.c_str());
         line++;
     }
-    wrefresh(_box);
+    wnoutrefresh(_box);
 }

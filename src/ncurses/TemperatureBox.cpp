@@ -71,5 +71,5 @@ void TemperatureBox::display(Krell::IModule *module) {
     for (int h = 0; h <= graphHeight; h++) mvwaddch(_box, startY - h, startX - 1, ACS_VLINE);
     for (int w = 0; w < graphWidth; w++) mvwaddch(_box, startY + 1, startX + w, ACS_HLINE);
 
-    wrefresh(_box);
+    wnoutrefresh(_box);
 }
