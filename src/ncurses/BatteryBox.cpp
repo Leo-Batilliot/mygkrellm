@@ -9,20 +9,20 @@
 
 BatteryBox::BatteryBox(int x, int y) : _box(newwin(7, 72, y, x)) {}
 
-BatteryBox::~BatteryBox() override {
+BatteryBox::~BatteryBox() {
     if (_box)
         delwin(_box);
 }
 
-WINDOW *BatteryBox::getWin() const override {
+WINDOW *BatteryBox::getWin() const {
     return _box;
 }
 
-std::string BatteryBox::getModuleNeeded() const override {
+std::string BatteryBox::getModuleNeeded() const {
     return "Battery";
 }
 
-void BatteryBox::display(Krell::IModule *module) override {
+void BatteryBox::display(Krell::IModule *module) {
     if (!_box || !module) return;
     const std::map<std::string, std::string> &data = module->getData();
 

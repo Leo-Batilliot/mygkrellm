@@ -9,20 +9,20 @@
 
 UptimeBox::UptimeBox(int x, int y) : _box(newwin(5, 72, y, x)) {}
 
-UptimeBox::~UptimeBox() override {
+UptimeBox::~UptimeBox() {
     if (_box)
         delwin(_box);
 }
 
-WINDOW *UptimeBox::getWin() const override {
+WINDOW *UptimeBox::getWin() const {
     return _box;
 }
     
-std::string UptimeBox::getModuleNeeded() const override {
+std::string UptimeBox::getModuleNeeded() const {
     return "Uptime";
 }
 
-void UptimeBox::display(Krell::IModule *module) override {
+void UptimeBox::display(Krell::IModule *module) {
     if (!_box || !module) return;
     const std::map<std::string, std::string> &data = module->getData();
 

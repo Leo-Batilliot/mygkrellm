@@ -9,20 +9,20 @@
 
 OsBox::OsBox(int x, int y) : _box(newwin(7, 72, y, x)) {}
 
-OsBox::~OsBox() override {
+OsBox::~OsBox() {
     if (_box)
         delwin(_box);
 }
 
-std::string OsBox::getModuleNeeded() const override {
+std::string OsBox::getModuleNeeded() const {
     return "OS & Kernel";
 }
 
-WINDOW *OsBox::getWin() const override {
+WINDOW *OsBox::getWin() const {
     return _box;
 }
 
-void OsBox::display(Krell::IModule *module) override {
+void OsBox::display(Krell::IModule *module) {
     if (!_box || !module) return;
     const std::map<std::string, std::string> &data = module->getData();
 
