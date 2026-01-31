@@ -34,7 +34,11 @@ class UptimeModule : public Krell::IModule {
         }
 
     public:
-        UptimeModule() : _name("Uptime") { update(); }
+        UptimeModule() : _name("Uptime")
+        {
+            _data["Uptime"] = "Unknown";
+            update();
+        }
         virtual ~UptimeModule() = default;
 
         void update() override

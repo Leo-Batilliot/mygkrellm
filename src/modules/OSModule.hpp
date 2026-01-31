@@ -28,7 +28,12 @@ class OSModule : public Krell::IModule {
         }
 
     public:
-        OSModule() : _name("OS & Kernel") {update();}
+        OSModule() : _name("OS & Kernel")
+        {
+            _data["Kernel"] = "Unknown";
+            _data["Operating system"] = "Unknown";
+            update();
+        }
         virtual ~OSModule() = default;
 
         void update() override

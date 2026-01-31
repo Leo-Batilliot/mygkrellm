@@ -35,7 +35,13 @@ class RamModule : public Krell::IModule {
         }
 
     public:
-        RamModule() : _name("RAM") {update();}
+        RamModule() : _name("RAM")
+        {
+            _data["Total"] = "Unknown";
+            _data["Free"]  = "Unknown";
+            _data["Used"]  = "Unknown";
+            _data["Percent"] = "0%";
+            update();}
         virtual ~RamModule() = default;
 
         void update() override
