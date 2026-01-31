@@ -31,6 +31,8 @@ void CpuBox::display(Krell::IModule *module) {
     const std::map<std::string, std::string> data = cpuModule->getData();
     std::string model = data.at("Model");
 
+    int height = 8 + (nbCores / 2) + (nbCores % 2);
+    wresize(_box, height, 75);
 
     werase(_box);
     box(_box, 0, 0);

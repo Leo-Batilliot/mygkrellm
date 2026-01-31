@@ -5,6 +5,7 @@
 #include "iostream"
 #include "ncurses/RamBox.hpp"
 #include "ncurses/CpuBox.hpp"
+#include "ncurses/OsBox.hpp"
 
 NcursesDisplay::~NcursesDisplay()
 {
@@ -25,7 +26,7 @@ void NcursesDisplay::init()
     _timeWindow = newwin(5, 40, 2, 2);
     _hostnameWindow = newwin(5, 40, 7, 2);
 
-    // create boxes and register them
+    _boxes.push_back(new OsBox(2, 46));
     _boxes.push_back(new CpuBox(2, 12));
     _boxes.push_back(new RamBox(2, 29));
 
