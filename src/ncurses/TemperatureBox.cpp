@@ -23,7 +23,7 @@ void TemperatureBox::display(Krell::IModule *module) {
     float currentTemp = std::stof(data.at("Temp"));
     
     _prevData.push_back(currentTemp);
-    if (_prevData.size() > 600)
+    if (_prevData.size() > 60)
         _prevData.erase(_prevData.begin());
 
     werase(_box);
@@ -37,7 +37,7 @@ void TemperatureBox::display(Krell::IModule *module) {
     mvwprintw(_box, 0, 18, "=");
     wattroff(_box, A_BOLD);
 
-    mvwprintw(_box, 1, 3, "Current: %.1f°C", currentTemp);
+    mvwprintw(_box, 1, 3, "Current: %.1f°C | %d", currentTemp, _prevData.size());
 
     int graphHeight = 6;
     int graphWidth = 60;
@@ -47,7 +47,7 @@ void TemperatureBox::display(Krell::IModule *module) {
     float minT = 30.0;
     float maxT = 90.0;
 
-    for (size_t i = 0; i < _prevData.size() ; i += 10) {
+    for (size_t i = 0; i < _prevData.size() ; i++) {
         float val = _prevData[i];
         
         int pointY = (int)((val - minT) / (maxT - minT) * graphHeight);
