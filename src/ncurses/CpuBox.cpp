@@ -1,17 +1,17 @@
 /*
 ** EPITECH PROJECT, 2026
-** CpuWindow
+** CpuBox
 ** File description:
-** functions of CpuWindow
+** functions of CpuBox
 */
 
-#include "CpuWindow.hpp"
+#include "CpuBox.hpp"
 
-CpuWindow::CpuWindow() : _CpuWin(nullptr) {}
+CpuBox::CpuBox() : _CpuWin(nullptr) {}
 
-CpuWindow::~CpuWindow() {}
+CpuBox::~CpuBox() {}
 
-void CpuWindow::displayCpuMod() {
+void CpuBox::displayCpuMod() {
      if (!_CpuWin)
         _CpuWin = newwin(7, 72, 2, 2);
     const std::map<std::string, std::string> data = getData();

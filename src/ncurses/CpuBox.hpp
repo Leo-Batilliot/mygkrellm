@@ -1,19 +1,19 @@
 /*
 ** EPITECH PROJECT, 2026
-** CpuWindow
+** CpuBox
 ** File description:
-** CpuWindow def
+** CpuBox def
 */
 
-#ifndef CPUWINDOW
-    #define CPUWINDOW
+#ifndef CPUBOX
+    #define CPUBOX
 
     #include <iostream>
     #include <string>
     #include <ncurses.h>
     #include "modules/CpuModule.hpp"
 
-class CpuWindow : public CpuModule{
+class CpuBox : public CpuModule{
     private:
         /* Attributs */
         WINDOW *_CpuWin;
@@ -27,8 +27,8 @@ class CpuWindow : public CpuModule{
 
     public:
         /* Const / Destr */
-        CpuWindow();
-        ~CpuWindow() override;
+        CpuBox();
+        ~CpuBox() override;
 
         /* Getters */
 
