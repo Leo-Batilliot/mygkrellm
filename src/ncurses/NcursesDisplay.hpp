@@ -22,6 +22,9 @@ class NcursesDisplay : public Krell::IDisplay {
 
     protected:
     private:
+        WINDOW *_window;
+        WINDOW *_timeWindow;
+        WINDOW *_hostnameWindow;
 };
 
 #endif /* !NCURSESDISPLAY_HPP_ */
