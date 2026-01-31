@@ -11,7 +11,7 @@
     #include <iostream>
     #include <string>
     #include <ncurses.h>
-    #include "IBox.hpp"
+    #include "ncurses/IBox.hpp"
     #include "modules/CpuModule.hpp"
 
 class CpuBox : public IBox {
@@ -41,6 +41,7 @@ class CpuBox : public IBox {
 
         void display(Krell::IModule *module) override;
         WINDOW *getWin() const override;
+        std::string getModuleNeeded() const override;
 };
 
 #endif

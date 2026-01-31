@@ -18,6 +18,10 @@ WINDOW *CpuBox::getWin() const {
     return _box;
 }
 
+std::string CpuBox::getModuleNeeded() const {
+    return "Cpu";
+}
+
 void CpuBox::display(Krell::IModule *module) {
      if (!_box)
         return;

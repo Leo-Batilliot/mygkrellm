@@ -38,8 +38,7 @@ class IBox {
         /* Methods */
         virtual void display(Krell::IModule *module) = 0;
         virtual WINDOW *getWin() const = 0;
+        virtual std::string getModuleNeeded() const = 0;
 };
-
-std::ostream& operator<<(std::ostream& os, const IBox& obj);
 
 #endif

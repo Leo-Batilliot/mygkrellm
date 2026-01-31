@@ -14,6 +14,10 @@ RamBox::~RamBox() {
         delwin(_box);
 }
 
+std::string RamBox::getModuleNeeded() const {
+    return "Ram";
+}
+
 WINDOW *RamBox::getWin() const {
     return _box;
 }

@@ -4,9 +4,7 @@
 #include "modules/Hostname.hpp"
 #include "iostream"
 
-NcursesDisplay::NcursesDisplay() : _window(nullptr), _timeWindow(nullptr), _hostnameWindow(nullptr)
-{
-}
+NcursesDisplay::NcursesDisplay() : _window(nullptr), _timeWindow(nullptr), _hostnameWindow(nullptr) {}
 
 NcursesDisplay::~NcursesDisplay()
 {
@@ -25,6 +23,8 @@ void NcursesDisplay::init()
     _window = newwin(h, w, 0, 0);
     _timeWindow = newwin(5, 20, 2, 2);
     _hostnameWindow = newwin(5, 30, 7, 2);
+    _boxes.push_back(new CpuBox(2, 12));
+    _boxes.push_back(new RamBox(2, 29));
     nodelay(_window, TRUE);
     keypad(_window, TRUE);
 }
@@ -77,8 +77,13 @@ void NcursesDisplay::display(const std::vector<Krell::IModule *> &modules)
             mvwprintw(_hostnameWindow, 2, 1, "Username: %s", data.at("Username").c_str());
             wrefresh(_hostnameWindow);
         }
+        for (IBox *box : _boxes) {
+            if (box->getModuleNeeded() == module->getName()) {
+                box->display(module);
+            }
+        }
     }
-    usleep(1000);
+    //usleep(1000);
 }
 
 bool NcursesDisplay::handle_inputs()
