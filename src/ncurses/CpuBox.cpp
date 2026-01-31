@@ -49,7 +49,7 @@ void CpuBox::display(Krell::IModule *module) {
     std::map<std::string, std::string> &coresUsage = cpuModule->getCoreUsage();
     int nbCores = coresUsage.size();
     int height = 8 + (nbCores / 2) + (nbCores % 2);
-    wresize(_box, height + 1, 75);
+    wresize(_box, height + 1, 72);
 
     wnoutrefresh(_box);
     werase(_box);
