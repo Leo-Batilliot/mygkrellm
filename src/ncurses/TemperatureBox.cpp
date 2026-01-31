@@ -64,7 +64,8 @@ void TemperatureBox::display(Krell::IModule *module) {
 
         if (i > 0) {
             int prevY = (int)(((_prevData[i-1] - minT) / (maxT - minT)) * graphH);
-            if (prevY < 0) prevY = 0; if (prevY > graphH) prevY = graphH;
+            if (prevY < 0) prevY = 0;
+            if (prevY > graphH) prevY = graphH;
             
             if (prevY < valY)
                 mvwaddch(_box, startY - valY + 1, startX + i, '/');
