@@ -26,7 +26,7 @@ class SfmlDisplay : public Krell::IDisplay {
         void init() override;
         void stop() override;
         void display(const std::vector<Krell::IModule *> &modules) override;
-        bool handle_inputs() override;
+        int handle_inputs() override;
 
     private:
         sf::RenderWindow _window;
@@ -53,6 +53,7 @@ class SfmlDisplay : public Krell::IDisplay {
         void drawNetwork(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
         void drawOS(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
         void drawRam(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
+        void drawBattery(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
 
         std::string safeGet(const std::map<std::string, std::string>& data, const std::string& key);
 };

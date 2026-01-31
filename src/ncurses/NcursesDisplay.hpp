@@ -18,7 +18,7 @@ class NcursesDisplay : public Krell::IDisplay {
         void init() override;
         void stop() override;
         void display(const std::vector<Krell::IModule *> &modules) override;
-        bool handle_inputs() override;
+        int handle_inputs() override;
 
     protected:
     private:

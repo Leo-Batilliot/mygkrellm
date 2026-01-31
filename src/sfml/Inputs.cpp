@@ -1,10 +1,14 @@
 #include "SfmlDisplay.hpp"
 
-bool SfmlDisplay::handle_inputs()
+int SfmlDisplay::handle_inputs()
 {
     sf::Event event;
     while (_window.pollEvent(event)) {
-        if (event.type == sf::Event::Closed) return false;
+        if (event.type == sf::Event::Closed)
+            return 1;
+
+        if (event.type == sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+            return 2;
 
         sf::Vector2i mousePos = sf::Mouse::getPosition(_window);
 
@@ -40,13 +44,15 @@ bool SfmlDisplay::handle_inputs()
 
         if (event.type == sf::Event::MouseWheelScrolled) {
             if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel) {
+
                 _scrollY -= event.mouseWheelScroll.delta * _scrollSpeed;
+                if (_scrollY < 0)
+                    _scrollY = 0;
 
-                if (_scrollY < 0) _scrollY = 0;
-
-                if (_scrollY > _maxScrollY) _scrollY = _maxScrollY;
+                if (_scrollY > _maxScrollY) _scrollY =
+                    _maxScrollY;
             }
         }
     }
-    return true;
+    return 0;
 }

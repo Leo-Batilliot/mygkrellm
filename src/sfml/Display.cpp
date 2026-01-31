@@ -124,6 +124,7 @@ void SfmlDisplay::drawModule(ModuleWrapper &wrapper, sf::Vector2f pos, float wid
     else if (name == "Network") drawNetwork(data, pos, ty);
     else if (name == "OS & Kernel") drawOS(data, pos, ty);
     else if (name == "RAM") drawRam(data, pos, ty);
+    else if (name == "Battery") drawBattery(data, pos, ty);
 
     wrapper.background.setSize(sf::Vector2f(MOD_WIDTH, ty - pos.y + 10));
 }

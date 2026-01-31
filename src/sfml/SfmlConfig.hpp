@@ -30,6 +30,6 @@
 #define COLOR_TITLE sf::Color::Red
 
 // Assets
-#define FONT_PATH "src/assets/fonts/OpenSansRegular.ttf"
+#define FONT_PATH "src/assets/fonts/Inter.ttf"
 
 #endif
