@@ -49,6 +49,8 @@ class BatteryModule : public Krell::IModule {
     public:
         BatteryModule() : _name("Battery")
         {
+            _data["Status"] = "Unknown";
+            _data["Level"]  = "Unknown";
             detectSource();
             update();
         }

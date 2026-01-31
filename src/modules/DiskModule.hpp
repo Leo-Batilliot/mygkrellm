@@ -28,8 +28,14 @@ class DiskModule : public Krell::IModule {
         }
 
     public:
-        DiskModule() : _name("Disk") {update();}
-        virtual ~DiskModule() = default;
+        DiskModule() : _name("Disk")
+        {
+            _data["Total"] = "Unknown";
+            _data["Free"]  = "Unknown";
+            _data["Used"]  = "Unknown";
+            _data["Percent"] = "0%";
+            update();
+        }        virtual ~DiskModule() = default;
 
         void update() override
         {

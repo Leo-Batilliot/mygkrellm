@@ -40,7 +40,12 @@ class NetworkModule : public Krell::IModule {
         }
 
     public:
-        NetworkModule() : _name("Network") {}
+        NetworkModule() : _name("Network")
+        {
+            _data["Download"] = "Unknown";
+            _data["Upload"] = "Unknown";
+            update();
+        }
         virtual ~NetworkModule() = default;
 
         void update() override

@@ -16,7 +16,12 @@ class Hostname : public Krell::IModule {
         std::string _name;
         std::map<std::string, std::string> _data;
     public:
-        Hostname() : _name("Hostname") {update();}
+        Hostname() : _name("Hostname") 
+        {
+            _data["Hostname"] = "Unknown";
+            _data["Username"] = "Unknown";
+            update();
+        }
         virtual ~Hostname() = default;
 
         void update() override
