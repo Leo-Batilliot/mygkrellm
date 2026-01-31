@@ -20,10 +20,7 @@ void TemperatureBox::display(Krell::IModule *module) {
     if (!_box || !module) return;
     const std::map<std::string, std::string> &data = module->getData();
     
-    float currentTemp = 0.0;
-    if (data.count("Temperature")) {
-        currentTemp = std::stof(data.at("Temperature"));
-    }
+    float currentTemp = std::stof(data.at("Temp"));
     
     _prevData.push_back(currentTemp);
     if (_prevData.size() > 60)
