@@ -47,7 +47,7 @@ void TemperatureBox::display(Krell::IModule *module) {
     float minT = 30.0;
     float maxT = 90.0;
 
-    for (size_t i = 0; i < _prevData.length() ; i += 100) {
+    for (size_t i = 0; i < _prevData.size() ; i += 100) {
         float val = _prevData[i];
         
         int pointY = (int)((val - minT) / (maxT - minT) * graphHeight);
