@@ -19,6 +19,7 @@ class TemperatureBox : public IBox {
         /* Attributs */
         WINDOW *_box;
         std::vector<float> _prevData;
+        int _countPush;
 
         /* Methods */
 

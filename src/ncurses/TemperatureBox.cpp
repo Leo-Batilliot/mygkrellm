@@ -1,7 +1,7 @@
 #include "TemperatureBox.hpp"
 #include <algorithm>
 
-TemperatureBox::TemperatureBox(int x, int y) : _box(newwin(12, 75, y, x)) {}
+TemperatureBox::TemperatureBox(int x, int y) : _box(newwin(12, 75, y, x)), _countPush(0) {}
 
 TemperatureBox::~TemperatureBox() {
     if (_box)
@@ -22,7 +22,11 @@ void TemperatureBox::display(Krell::IModule *module) {
     
     float currentTemp = std::stof(data.at("Temp"));
     
-    _prevData.push_back(currentTemp);
+    _countPush++;
+    if (_countPush > 1500) {
+        _prevData.push_back(currentTemp);
+        _countPush = 0;
+    }
     if (_prevData.size() > 60)
         _prevData.erase(_prevData.begin());
 
@@ -37,7 +41,7 @@ void TemperatureBox::display(Krell::IModule *module) {
     mvwprintw(_box, 0, 18, "=");
     wattroff(_box, A_BOLD);
 
-    mvwprintw(_box, 1, 3, "Current: %.1f°C | %d", currentTemp, _prevData.size());
+    mvwprintw(_box, 1, 3, "Current: %.1f°C", currentTemp);
 
     int graphHeight = 6;
     int graphWidth = 60;
@@ -55,12 +59,14 @@ void TemperatureBox::display(Krell::IModule *module) {
         if (pointY > graphHeight) pointY = graphHeight;
 
         int pair = 3;
-        if (val > 75) pair = 1;
-        else if (val > 55) pair = 2;
+        if (pointY > 4) pair = 1;
+        else if (pointY > 2) pair = 2;
 
-        wattron(_box, COLOR_PAIR(pair));
-        mvwprintw(_box, startY - pointY, startX + i, "o");
-        wattroff(_box, COLOR_PAIR(pair));
+        for (int h = 0; h < pointY; h++) {
+            wattron(_box, COLOR_PAIR(pair));
+            mvwprintw(_box, startY - h, startX + i, "o");
+            wattroff(_box, COLOR_PAIR(pair));
+        }
     }
 
     for (int h = 0; h <= graphHeight; h++) mvwprintw(_box, startY - h, startX - 1, "|");
