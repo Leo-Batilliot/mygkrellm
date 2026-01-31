@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include "ncurses/NcursesDisplay.hpp"
 #include "modules/Data_time.hpp"
+#include "modules/Hostname.hpp"
 #include "iostream"
 
 NcursesDisplay::NcursesDisplay() : _window(nullptr)
@@ -54,6 +55,12 @@ void NcursesDisplay::display(const std::vector<Krell::IModule *> &modules)
             Data_time* timeModule = dynamic_cast<Data_time*>(module);
             if (timeModule) {
                 timeModule->display_time();
+            }
+        }
+        if (module->getName() == "Hostname") {
+            Hostname* Hostnamemodule = dynamic_cast<Hostname*>(module);
+            if (Hostnamemodule) {
+                Hostnamemodule->display_hostname();
             }
         }
     }
