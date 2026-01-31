@@ -21,6 +21,8 @@ SRC	=	src/main.cpp \
 		src/ncurses/NcuresesDisplay.cpp \
 		src/ncurses/RamBox.cpp \
 		src/ncurses/CpuBox.cpp \
+		src/ncurses/TimeBox.cpp \
+		src/ncurses/HostnameBox.cpp \
 
 # COLORS
 RED=\033[31m
@@ -35,7 +37,7 @@ NAME = MyGKrellm
 
 # COMPILER
 CC	=	g++
-CFLAGS	=	-std=c++20 -Wall -Wextra -Werror -I src/
+CFLAGS	=	-std=c++20 -Wall -Wextra -Werror -I src/ -I .
 SFMLFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lncurses
 
 # PRINT COMPILATION

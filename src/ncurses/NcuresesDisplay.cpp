@@ -5,6 +5,8 @@
 #include "iostream"
 #include "ncurses/RamBox.hpp"
 #include "ncurses/CpuBox.hpp"
+#include "ncurses/TimeBox.hpp"
+#include "ncurses/HostnameBox.hpp"
 
 NcursesDisplay::~NcursesDisplay()
 {
@@ -22,10 +24,9 @@ void NcursesDisplay::init()
     init_pair(2, COLOR_YELLOW, -1);
     init_pair(3, COLOR_GREEN, -1);
 
-    _timeWindow = newwin(5, 40, 2, 2);
-    _hostnameWindow = newwin(5, 40, 7, 2);
-
     // create boxes and register them
+    _boxes.push_back(new TimeBox(2, 2));
+    _boxes.push_back(new HostnameBox(2, 7));
     _boxes.push_back(new CpuBox(2, 12));
     _boxes.push_back(new RamBox(2, 29));
 
@@ -38,14 +39,6 @@ void NcursesDisplay::stop()
     if (_window) {
         delwin(_window);
         _window = nullptr;
-    }
-    if (_timeWindow) {
-        delwin(_timeWindow);
-        _timeWindow = nullptr;
-    }
-    if (_hostnameWindow) {
-        delwin(_hostnameWindow);
-        _hostnameWindow = nullptr;
     }
     for (IBox *b : _boxes) {
         if (b)
@@ -67,22 +60,6 @@ void NcursesDisplay::display(const std::vector<Krell::IModule *> &modules)
     wnoutrefresh(stdscr);
 
     for (auto module : modules) {
-        if (module->getName() == "Hostname") {
-            auto data = module->getData();
-            werase(_hostnameWindow);
-            box(_hostnameWindow, 0, 0);
-            mvwprintw(_hostnameWindow, 1, 1, "Hostname: %s", data.at("Hostname").c_str());
-            mvwprintw(_hostnameWindow, 2, 1, "Username: %s", data.at("Username").c_str());
-            wnoutrefresh(_hostnameWindow);
-        }
-        if (module->getName() == "Date & Time") {
-            auto data = module->getData();
-            werase(_timeWindow);
-            box(_timeWindow, 0, 0);
-            mvwprintw(_timeWindow, 1, 1, "Time: %s", data.at("Time").c_str());
-            mvwprintw(_timeWindow, 2, 1, "Date: %s", data.at("Date").c_str());
-            wnoutrefresh(_timeWindow);
-        }
         for (IBox *box : _boxes) {
             if (box && box->getModuleNeeded() == module->getName()) {
                 box->display(module);
