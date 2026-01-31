@@ -36,8 +36,6 @@ class RamBox : public IBox {
 
         /* Setters */
 
-        // std::string getModuleNeeded() const override; // Commented out as it already exists
-
         /* Methods */
         void display(Krell::IModule *module) override;
         WINDOW *getWin() const override;
