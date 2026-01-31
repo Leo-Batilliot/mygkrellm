@@ -7,7 +7,7 @@
 
 #include "OsBox.hpp"
 
-OsBox::OsBox(int x, int y) : _box(newwin(7, 72, y, x)) {}
+OsBox::OsBox(int x, int y) : _box(newwin(5, 72, y, x)) {}
 
 OsBox::~OsBox() {
     if (_box)

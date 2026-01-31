@@ -41,9 +41,9 @@ void BatteryBox::display(Krell::IModule *module) {
     
     wattron(_box, A_BOLD);
     mvwprintw(_box, 0, 4, "=");
-    wattron(_box, COLOR_PAIR(4));
+    wattron(_box, COLOR_PAIR(1));
     mvwprintw(_box, 0, 5, " BATTERY ");
-    wattroff(_box, COLOR_PAIR(4));
+    wattroff(_box, COLOR_PAIR(1));
     mvwprintw(_box, 0, 14, "=");
     wattroff(_box, A_BOLD);
 
