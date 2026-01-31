@@ -66,10 +66,11 @@ make
 ## ⌨️ Contrôles
 
 | Touche | Action   |
-|------|-------                |
-| `q` | Quitter                |
-| `s` | Changer de mode        |
-| `↑ / ↓` | Navigation modules |
+|------|-------                            |
+| `q` | Quitter                            |
+| `s` | Changer de mode                    |
+| `↑ / ↓` | Navigation modules             |
+| `1, 2, ..0` | visibilité du Nième module |
 
 ---
 
