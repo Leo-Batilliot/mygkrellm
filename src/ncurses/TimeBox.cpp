@@ -21,10 +21,10 @@ int TimeBox::getHeight() const {
     return _height;
 }
 
-void TimeBox::setYPos(int y) {
+void TimeBox::setYPos(int y, int width) {
     if (_box)
         delwin(_box);
-    _box = newwin(_height, 72, y, 2);
+    _box = newwin(_height, width, y, 0);
 }
 
 int TimeBox::getYPos() const {
@@ -42,10 +42,13 @@ WINDOW *TimeBox::getWin() const {
 
 void TimeBox::display(Krell::IModule *module) {
     if (!_box) return;
+    int winW, winH;
+    getmaxyx(_box, winH, winW);
+    (void)winH;
     const std::map<std::string, std::string> data = module->getData();
 
-    std::string date = data.at("Date");
-    std::string time = data.at("Time");
+    std::string date = safeGet(data, "Date");
+    std::string time = safeGet(data, "Time");
 
     werase(_box);
     box(_box, 0, 0);

@@ -32,7 +32,7 @@ class IBox {
         /* Getters */
 
         /* Setters */
-        virtual void setYPos(int y) = 0;
+        virtual void setYPos(int y, int width) = 0;
         virtual int getYPos() const = 0;
 
         /* Operator */

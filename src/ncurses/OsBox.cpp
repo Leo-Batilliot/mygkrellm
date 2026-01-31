@@ -28,10 +28,10 @@ WINDOW *OsBox::getWin() const {
     return _box;
 }
 
-void OsBox::setYPos(int y) {
+void OsBox::setYPos(int y, int width) {
     if (_box)
         delwin(_box);
-    _box = newwin(_height, 72, y, 2);
+    _box = newwin(_height, width, y, 0);
 }
 
 int OsBox::getYPos() const {
@@ -42,9 +42,10 @@ int OsBox::getYPos() const {
 void OsBox::display(Krell::IModule *module) {
     if (!_box || !module) return;
     const std::map<std::string, std::string> &data = module->getData();
-
     werase(_box);
+    wattrset(_box, A_NORMAL);
     box(_box, 0, 0);
+
     wattron(_box, A_BOLD);
     mvwprintw(_box, 0, 4, "=");
     wattron(_box, COLOR_PAIR(1));
@@ -52,13 +53,9 @@ void OsBox::display(Krell::IModule *module) {
     wattroff(_box, COLOR_PAIR(1));
     mvwprintw(_box, 0, 18, "=");
     wattroff(_box, A_BOLD);
-    int line = 1;
-    for (auto const& [key, value] : data) {
-        wattron(_box, A_BOLD);
-        mvwprintw(_box, line, 2, "%s:", key.c_str());
-        wattroff(_box, A_BOLD);
-        mvwprintw(_box, line, 2 + key.length() + 2, "%s", value.c_str());
-        line++;
-    }
+
+    mvwprintw(_box, 2, 2, "Kernel: %s", safeGet(data, "Kernel").c_str());
+    mvwprintw(_box, 3, 2, "Operating system: %s", safeGet(data, "Operating system").c_str());
+
     wnoutrefresh(_box);
 }

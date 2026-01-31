@@ -36,7 +36,7 @@ class CpuBox : public IBox {
         /* Getters */
 
         /* Setters */
-        void setYPos(int y) override;
+        void setYPos(int y, int width) override;
         int getYPos() const override;
 
         /* Operator */

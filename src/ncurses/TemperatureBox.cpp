@@ -18,10 +18,10 @@ int TemperatureBox::getHeight() const {
     return _height;
 }
 
-void TemperatureBox::setYPos(int y) {
+void TemperatureBox::setYPos(int y, int width) {
     if (_box)
         delwin(_box);
-    _box = newwin(_height, 72, y, 2);
+    _box = newwin(_height, width, y, 0);
 }
 
 int TemperatureBox::getYPos() const {
@@ -35,9 +35,12 @@ std::string TemperatureBox::getModuleNeeded() const {
 
 void TemperatureBox::display(Krell::IModule *module) {
     if (!_box || !module) return;
+    int winW, winH;
+    getmaxyx(_box, winH, winW);
+    (void)winH;
     const std::map<std::string, std::string> &data = module->getData();
     
-    float currentTemp = std::stof(data.at("Temp"));
+    float currentTemp = std::stof(safeGet(data, "Temp"));
     
     _countPush++;
     if (_countPush > 1500) {

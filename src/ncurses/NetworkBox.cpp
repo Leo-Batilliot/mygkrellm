@@ -18,10 +18,10 @@ NetworkBox::~NetworkBox()
         delwin(_box);
 }
 
-void NetworkBox::setYPos(int y) {
+void NetworkBox::setYPos(int y, int width) {
     if (_box)
         delwin(_box);
-    _box = newwin(_height, 72, y, 2);
+    _box = newwin(_height, width, y, 0);
 }
 
 int NetworkBox::getYPos() const {
@@ -42,101 +42,74 @@ WINDOW *NetworkBox::getWin() const {
 }
 
 void NetworkBox::display(Krell::IModule *module) {
-    if (!_box) return;
+    if (!_box || !module) return;
+    int winW, winH;
+    getmaxyx(_box, winH, winW);
+    (void)winH;
     const std::map<std::string, std::string> data = module->getData();
-    constexpr std::size_t MAX_HISTO = 68;
+    
+    int graphWidth = winW - 7; 
+    int endCol = winW - 2;     
     time_t now = time(nullptr);
 
-    std::string downloadS = data.at("Download");
-    std::string uploadS = data.at("Upload");
-    bool isKB_DL = (downloadS.find("KB/s") != std::string::npos);
-    bool isKB_UP = (uploadS.find("KB/s") != std::string::npos);
-    float download = stof(data.at("Download"));
-    float upload = stof(data.at("Upload"));
+    auto toKB = [](const std::string& val) -> float {
+        try {
+            float f = std::stof(val);
+            if (val.find("MB/s") != std::string::npos) return f * 1024.0f;
+            if (val.find("GB/s") != std::string::npos) return f * 1024.0f * 1024.0f;
+            return f;
+        } catch (...) { return 0; }
+    };
 
-    if (!isKB_DL) {
-        download = download * 1000;
-    }
-    if (!isKB_UP) {
-        upload = upload * 1000;
-    }
+    float currentDL = toKB(safeGet(data, "Download"));
+    float currentUP = toKB(safeGet(data, "Upload"));
 
-    if (!_downloadHisto.empty()) {
-        _highestDL = *std::max_element(
-            _downloadHisto.begin(),
-            _downloadHisto.end()
-        );
-    }
-
-    if (!_updateHisto.empty()) {
-        _highestUP = *std::max_element(
-            _updateHisto.begin(),
-            _updateHisto.end()
-        );
-    }
-
-
-    if (_updateHisto.empty()) {
-        _downloadHisto.push_back(download);
-        _updateHisto.push_back(upload);
-    }
-    else if (now != _lastUpdate) {
-        _updateHisto.push_back(upload);
-        _downloadHisto.push_back(download);
+    if (now != _lastUpdate || _downloadHisto.empty()) {
+        _downloadHisto.push_back(currentDL);
+        _updateHisto.push_back(currentUP);
         _lastUpdate = now;
+        if ((int)_downloadHisto.size() > graphWidth) _downloadHisto.pop_front();
+        if ((int)_updateHisto.size() > graphWidth) _updateHisto.pop_front();
     }
-    if (_downloadHisto.size() > MAX_HISTO)
-        _downloadHisto.pop_front();
-    if (_updateHisto.size() > MAX_HISTO)
-        _updateHisto.pop_front();
+
+    _highestDL = 0; _highestUP = 0;
+    for (float v : _downloadHisto) if (v > _highestDL) _highestDL = v;
+    for (float v : _updateHisto) if (v > _highestUP) _highestUP = v;
 
     werase(_box);
     box(_box, 0, 0);
-    
-    // Titre
-    wattron(_box, A_BOLD);
-    mvwprintw(_box, 0, 4, "=");
-    wattron(_box, COLOR_PAIR(1));
-    mvwprintw(_box, 0, 5, " Network ");
-    wattroff(_box, COLOR_PAIR(1));
-    mvwprintw(_box, 0, 14, "=");
-    wattroff(_box, A_BOLD);
 
-    mvwprintw(_box, 1, 1, "Download: %s | Highest: %.0f KB/s", downloadS.c_str(), _highestDL);
+    wattron(_box, A_BOLD | COLOR_PAIR(1));
+    mvwprintw(_box, 0, 5, " Network ");
+    wattroff(_box, A_BOLD | COLOR_PAIR(1));
+
+    auto formatUnit = [](float kb) -> std::string {
+        if (kb >= 1024.0f) return std::to_string(kb / 1024.0f).substr(0, 4) + " MB/s";
+        return std::to_string(kb).substr(0, 4) + " KB/s";
+    };
+
+    mvwprintw(_box, 1, 1, "Download: %s | Highest: %s", safeGet(data, "Download").c_str(), formatUnit(_highestDL).c_str());
     mvwprintw(_box, 2, 1, "100|");
     mvwprintw(_box, 6, 1, " 50|");
     mvwprintw(_box, 11, 1, "  0|");
-    mvwprintw(_box, 12, 1, "Upload: %s | Highest: %.0f KB/s", uploadS.c_str(), _highestUP);
+
+    mvwprintw(_box, 12, 1, "Upload: %s | Highest: %s", safeGet(data, "Upload").c_str(), formatUnit(_highestUP).c_str());
     mvwprintw(_box, 13, 1, "100|");
     mvwprintw(_box, 18, 1, " 50|");
     mvwprintw(_box, 23, 1, "  0|");
 
-    for (size_t i = 0; i < _downloadHisto.size(); i++) {
-        int v = _downloadHisto[i];
-        int height = 0;
+    for (int i = 0; i < (int)_downloadHisto.size(); i++) {
+        float valDL = *(_downloadHisto.rbegin() + i);
+        float valUP = *(_updateHisto.rbegin() + i);
+        int xPos = endCol - i;
+        if (xPos < 6) break;
 
-        if (_highestDL > 0 && v > 0) {
-            height = (v * 10) / _highestDL;
-            if (height > 10) height = 10;
-        }
+        int hDL = (int)((std::min(valDL, 100.0f) / 100.0f) * 9);
+        for (int j = 0; j <= hDL; j++) mvwaddch(_box, 11 - j, xPos, 'O');
 
-        for (int j = 0; j < height; j++) {
-            mvwprintw(_box, 11 - j, i + 5, "O");
-        }
+        int hUP = (int)((std::min(valUP, 100.0f) / 100.0f) * 9);
+        for (int j = 0; j <= hUP; j++) mvwaddch(_box, 23 - j, xPos, 'O');
     }
-    for (size_t i = 0; i < _updateHisto.size(); i++) {
-        int v = _updateHisto[i];
-        int height = 0;
 
-        if (_highestUP > 0 && v > 0) {
-            height = (v * 10) / _highestUP;
-            if (height > 10) height = 10;
-        }
-
-        for (int j = 0; j < height; j++) {
-            mvwprintw(_box, 23 - j, i + 5, "O");
-        }
-    }
-    
     wnoutrefresh(_box);
 }

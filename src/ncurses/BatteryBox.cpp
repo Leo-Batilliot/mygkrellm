@@ -28,10 +28,10 @@ int BatteryBox::getHeight() const {
     return _height;
 }
 
-void BatteryBox::setYPos(int y) {
+void BatteryBox::setYPos(int y, int width) {
     if (_box)
         delwin(_box);
-    _box = newwin(_height, 72, y, 2);
+    _box = newwin(_height, width, y, 0);
 }
 
 int BatteryBox::getYPos() const {
@@ -41,10 +41,13 @@ int BatteryBox::getYPos() const {
 
 void BatteryBox::display(Krell::IModule *module) {
     if (!_box || !module) return;
+    int winW, winH;
+    getmaxyx(_box, winH, winW);
+    (void)winH;
     const std::map<std::string, std::string> &data = module->getData();
 
-    std::string status = data.count("Status") ? data.at("Status") : "Unknown";
-    std::string levelStr = data.count("Level") ? data.at("Level") : "0";
+    std::string status = safeGet(data, "Status");
+    std::string levelStr = safeGet(data, "Level");
     
     float percent = 0;
     try {

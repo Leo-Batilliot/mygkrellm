@@ -22,6 +22,8 @@
 #include "modules/UptimeModule.hpp"
 #include "modules/TemperatureModule.hpp"
 #include "modules/DiskModule.hpp"
+#include <chrono>
+#include <thread>
 
 int main(int ac, char **av)
 {
@@ -29,7 +31,7 @@ int main(int ac, char **av)
         std::unique_ptr<Krell::IDisplay> display;
         int display_type = 0;
 
-        if (ac > 1 && std::string(av[1]) == "-sfml") {
+        if (ac > 1 && std::string(av[1]) == "-sfml" && std::getenv("DISPLAY") != nullptr) {
             display = std::make_unique<SfmlDisplay>();
             display_type = 1;
         } else {
@@ -49,7 +51,6 @@ int main(int ac, char **av)
         modules.push_back(std::make_unique<TemperatureModule>());
 
         display->init();
-        sf::Clock updateClock;
         int res = 0;
 
         std::vector<Krell::IModule *> rawModules;
@@ -57,22 +58,29 @@ int main(int ac, char **av)
         for (auto &m : modules)
             rawModules.push_back(m.get());
 
-        for (auto &module : rawModules)
-            module->update();
+        auto updateClock = std::chrono::steady_clock::now();
+        auto displayClock = std::chrono::steady_clock::now();
+
         while (true) {
-            if (updateClock.getElapsedTime().asMilliseconds() >= 1000) {
+            auto now = std::chrono::steady_clock::now();
+            
+            if (std::chrono::duration_cast<std::chrono::milliseconds>(now - updateClock).count() >= 1000) {
                 for (auto &module : rawModules)
                     module->update();
-                updateClock.restart();
+                updateClock = now;
             }
 
-            display->display(rawModules);
+            if (std::chrono::duration_cast<std::chrono::milliseconds>(now - displayClock).count() >= 16) {
+                display->display(rawModules);
+                displayClock = now;
+            }
+
             res = display->handle_inputs();
             if (res == 1)
                 break;
             if (res == 2) {
                 display->stop();
-                if (display_type == 1)
+                if (display_type == 1 || std::getenv("DISPLAY") == nullptr)
                     display = std::make_unique<NcursesDisplay>();
                 else
                     display = std::make_unique<SfmlDisplay>();
