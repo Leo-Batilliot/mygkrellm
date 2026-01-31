@@ -1,7 +1,7 @@
 #include "TemperatureBox.hpp"
 #include <algorithm>
 
-TemperatureBox::TemperatureBox(int x, int y) : _box(newwin(10, 72, y, x)) {}
+TemperatureBox::TemperatureBox(int x, int y) : _box(newwin(12, 72, y, x)) {}
 
 TemperatureBox::~TemperatureBox() {
     if (_box)
@@ -23,7 +23,7 @@ void TemperatureBox::display(Krell::IModule *module) {
     float currentTemp = std::stof(data.at("Temp"));
     
     _prevData.push_back(currentTemp);
-    if (_prevData.size() > 60)
+    if (_prevData.size() > 6000)
         _prevData.erase(_prevData.begin());
 
     werase(_box);
@@ -47,7 +47,7 @@ void TemperatureBox::display(Krell::IModule *module) {
     float minT = 30.0;
     float maxT = 90.0;
 
-    for (size_t i = 0; i < _prevData.size(); ++i) {
+    for (size_t i = 0; i < _prevData.size(); i += 100) {
         float val = _prevData[i];
         
         int pointY = (int)((val - minT) / (maxT - minT) * graphHeight);
@@ -59,12 +59,12 @@ void TemperatureBox::display(Krell::IModule *module) {
         else if (val > 55) pair = 2;
 
         wattron(_box, COLOR_PAIR(pair));
-        mvwaddch(_box, startY - pointY, startX + i, 'o');
+        mvwprintw(_box, startY - pointY, startX + i, "o");
         wattroff(_box, COLOR_PAIR(pair));
     }
 
-    for (int h = 0; h <= graphHeight; h++) mvwaddch(_box, startY - h, startX - 1, ACS_VLINE);
-    for (int w = 0; w < graphWidth; w++) mvwaddch(_box, startY + 1, startX + w, ACS_HLINE);
+    for (int h = 0; h <= graphHeight; h++) mvwprintw(_box, startY - h, startX - 1, "|");
+    for (int w = 0; w < graphWidth; w++) mvwprintw(_box, startY + 1, startX + w, "-");
 
     wnoutrefresh(_box);
 }
