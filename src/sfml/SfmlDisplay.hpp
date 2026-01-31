@@ -59,8 +59,8 @@ class SfmlDisplay : public Krell::IDisplay {
         void drawUptime(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
         void drawTemperature(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
         void drawDisk(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
-
-        std::string safeGet(const std::map<std::string, std::string>& data, const std::string& key);
 };
+
+std::string safeGet(const std::map<std::string, std::string>& data, const std::string& key);
 
 #endif

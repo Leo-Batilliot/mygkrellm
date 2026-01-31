@@ -41,4 +41,6 @@ class IBox {
         virtual std::string getModuleNeeded() const = 0;
 };
 
+std::string safeGet(const std::map<std::string, std::string>& data, const std::string& key);
+
 #endif

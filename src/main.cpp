@@ -9,6 +9,9 @@
 
 #include "sfml/SfmlDisplay.hpp"
 #include "ncurses/NcursesDisplay.hpp"
+#include <memory>
+#include <exception>
+#include <iostream>
 #include "modules/Hostname.hpp"
 #include "modules/OSModule.hpp"
 #include "modules/DateTime.hpp"
@@ -22,62 +25,68 @@
 
 int main(int ac, char **av)
 {
-    Krell::IDisplay *display = nullptr;
-    int display_type = 0;
+    try {
+        std::unique_ptr<Krell::IDisplay> display;
+        int display_type = 0;
 
-    if (ac > 1 && std::string(av[1]) == "-sfml") {
-        display = new SfmlDisplay();
-        display_type = 1;
-    } else {
-        display = new NcursesDisplay();
-    }
-
-    std::vector<Krell::IModule *> modules;
-    modules.push_back(new BatteryModule());
-    modules.push_back(new DateTime());
-    modules.push_back(new OSModule());
-    modules.push_back(new Hostname());
-    modules.push_back(new CpuModule());
-    modules.push_back(new RamModule());
-    modules.push_back(new DiskModule());
-    modules.push_back(new NetworkModule());
-    modules.push_back(new UptimeModule());
-    modules.push_back(new TemperatureModule());
-    
-
-    display->init();
-    sf::Clock updateClock;
-    int res = 0;
-
-    for (auto &module : modules)
-        module->update();
-    while (true) {
-        if (updateClock.getElapsedTime().asMilliseconds() >= 1000) {
-            for (auto &module : modules)
-                module->update();
-            updateClock.restart();
+        if (ac > 1 && std::string(av[1]) == "-sfml") {
+            display = std::make_unique<SfmlDisplay>();
+            display_type = 1;
+        } else {
+            display = std::make_unique<NcursesDisplay>();
         }
 
-        display->display(modules);
-        res = display->handle_inputs();
-        if (res == 1)
-            break;
-        if (res == 2) {
-            display->stop();
-            delete display;
-            if (display_type == 1)
-                display = new NcursesDisplay();
-            else
-                display = new SfmlDisplay();
-            display_type = (display_type + 1) % 2;
-            display->init();
-        }
-    }
-    display->stop();
+        std::vector<std::unique_ptr<Krell::IModule>> modules;
+        modules.push_back(std::make_unique<BatteryModule>());
+        modules.push_back(std::make_unique<DateTime>());
+        modules.push_back(std::make_unique<OSModule>());
+        modules.push_back(std::make_unique<Hostname>());
+        modules.push_back(std::make_unique<CpuModule>());
+        modules.push_back(std::make_unique<RamModule>());
+        modules.push_back(std::make_unique<DiskModule>());
+        modules.push_back(std::make_unique<NetworkModule>());
+        modules.push_back(std::make_unique<UptimeModule>());
+        modules.push_back(std::make_unique<TemperatureModule>());
 
-    for (auto &mod : modules) {
-        delete mod;
+        display->init();
+        sf::Clock updateClock;
+        int res = 0;
+
+        std::vector<Krell::IModule *> rawModules;
+        rawModules.reserve(modules.size());
+        for (auto &m : modules)
+            rawModules.push_back(m.get());
+
+        for (auto &module : rawModules)
+            module->update();
+        while (true) {
+            if (updateClock.getElapsedTime().asMilliseconds() >= 1000) {
+                for (auto &module : rawModules)
+                    module->update();
+                updateClock.restart();
+            }
+
+            display->display(rawModules);
+            res = display->handle_inputs();
+            if (res == 1)
+                break;
+            if (res == 2) {
+                display->stop();
+                if (display_type == 1)
+                    display = std::make_unique<NcursesDisplay>();
+                else
+                    display = std::make_unique<SfmlDisplay>();
+                display_type = (display_type + 1) % 2;
+                display->init();
+            }
+        }
+        display->stop();
+        return 0;
+    } catch (const std::exception &e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return 84;
+    } catch (...) {
+        std::cerr << "Unknown error" << std::endl;
+        return 84;
     }
-    delete display;
-    return 0;
 }
