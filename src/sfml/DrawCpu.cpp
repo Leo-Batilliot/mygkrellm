@@ -73,7 +73,7 @@ void SfmlDisplay::drawCpu(Krell::IModule *module, const std::map<std::string, st
             if (cores.find(coreName) == cores.end())
                 continue;
 
-            std::string value = cores.at(coreName);
+            std::string value = safeGet(cores, coreName);
             float usage = std::stof(value);
             sf::Color gradient_color(255 * usage / 100, 255 * (100 - usage) / 100, 0);
 
