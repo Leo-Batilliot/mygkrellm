@@ -22,8 +22,11 @@ SRC	=	src/main.cpp \
 		src/sfml/DrawDisk.cpp \
 		src/sfml/SfmlUtils.cpp \
 		src/ncurses/NcuresesDisplay.cpp \
+		src/ncurses/NetworkBox.cpp \
 		src/ncurses/RamBox.cpp \
 		src/ncurses/CpuBox.cpp \
+		src/ncurses/TimeBox.cpp \
+		src/ncurses/HostnameBox.cpp \
 		src/ncurses/TemperatureBox.cpp \
 		src/ncurses/OsBox.cpp \
 		src/ncurses/BatteryBox.cpp \
@@ -42,7 +45,7 @@ NAME = MyGKrellm
 
 # COMPILER
 CC	=	g++
-CFLAGS	=	-std=c++20 -Wall -Wextra -Werror -I src/
+CFLAGS	=	-std=c++20 -Wall -Wextra -Werror -I src/ -I .
 SFMLFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lncurses
 
 # PRINT COMPILATION
