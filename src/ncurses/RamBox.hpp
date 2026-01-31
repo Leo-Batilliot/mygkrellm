@@ -10,14 +10,13 @@
 
     #include <iostream>
     #include <string>
-    #include <ncurses.h>
-    #include "interfaces/IModule.hpp"
     #include "modules/RamModule.hpp"
+    #include "ncurses/IBox.hpp"
 
-class RamBox : public RamModule{
+class RamBox : public IBox {
     private:
         /* Attributs */
-        WINDOW *_RamWin;
+        WINDOW *_box;
 
         /* Methods */
 
@@ -28,7 +27,7 @@ class RamBox : public RamModule{
 
     public:
         /* Const / Destr */
-        RamBox();
+        RamBox(int x, int y);
         ~RamBox() override;
 
         /* Getters */
@@ -38,8 +37,8 @@ class RamBox : public RamModule{
         /* Operator */
 
         /* Methods */
-
-        void displayRamMod();
+        void display(Krell::IModule *module) override;
+        WINDOW *getWin() const override;
 };
 
 #endif
