@@ -9,6 +9,8 @@
 
 BatteryBox::BatteryBox(int x, int y) : _box(newwin(7, 72, y, x)), _height(7) {}
 
+BatteryBox::BatteryBox() : _box(newwin(7, 72, 0, 0)), _height(7) {}
+
 BatteryBox::~BatteryBox() {
     if (_box)
         delwin(_box);

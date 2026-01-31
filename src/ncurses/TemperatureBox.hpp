@@ -32,6 +32,7 @@ class TemperatureBox : public IBox {
     public:
         /* Const / Destr */
         TemperatureBox(int x, int y);
+        TemperatureBox();
         ~TemperatureBox() override;
 
         /* Getters */

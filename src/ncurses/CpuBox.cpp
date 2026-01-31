@@ -9,6 +9,8 @@
 
 CpuBox::CpuBox(int x, int y) : _box(newwin(16, 72, y, x)), _height(16) {}
 
+CpuBox::CpuBox() : _box(newwin(16, 72, 0, 0)), _height(16) {}
+
 CpuBox::~CpuBox() {
     if (_box)
         delwin(_box);

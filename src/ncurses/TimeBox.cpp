@@ -9,6 +9,8 @@
 
 TimeBox::TimeBox(int x, int y) : _box(newwin(5, 72, y, x)), _height(5) {}
 
+TimeBox::TimeBox() : _box(newwin(5, 72, 0, 0)), _height(5) {}
+
 TimeBox::~TimeBox()
 {
     if (_box)

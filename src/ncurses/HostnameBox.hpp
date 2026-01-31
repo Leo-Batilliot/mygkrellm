@@ -14,6 +14,7 @@
 class HostnameBox : public IBox {
     public:
         HostnameBox(int x, int y);
+        HostnameBox();
         ~HostnameBox() override;
 
         void display(Krell::IModule *module) override;

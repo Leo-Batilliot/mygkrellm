@@ -29,6 +29,7 @@ class RamBox : public IBox {
     public:
         /* Const / Destr */
         RamBox(int x, int y);
+        RamBox();
         ~RamBox() override;
 
         /* Getters */

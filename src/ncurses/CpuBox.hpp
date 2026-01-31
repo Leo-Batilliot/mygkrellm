@@ -30,6 +30,7 @@ class CpuBox : public IBox {
     public:
         /* Const / Destr */
         CpuBox(int x, int y);
+        CpuBox();
         ~CpuBox() override;
 
         /* Getters */

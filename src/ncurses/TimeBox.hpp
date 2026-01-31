@@ -14,6 +14,7 @@
 class TimeBox : public IBox {
     public:
         TimeBox(int x, int y);
+        TimeBox();
         ~TimeBox() override;
 
         void display(Krell::IModule *module) override;

@@ -3,6 +3,8 @@
 
 TemperatureBox::TemperatureBox(int x, int y) : _box(newwin(12, 72, y, x)), _countPush(0), _height(12) {}
 
+TemperatureBox::TemperatureBox() : _box(newwin(12, 72, 0, 0)), _countPush(0), _height(12) {}
+
 TemperatureBox::~TemperatureBox() {
     if (_box)
         delwin(_box);

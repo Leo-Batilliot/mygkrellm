@@ -18,6 +18,7 @@
 class NetworkBox : public IBox {
     public:
         NetworkBox(int x, int y);
+        NetworkBox();
         ~NetworkBox() override;
 
         void display(Krell::IModule *module) override;

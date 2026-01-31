@@ -9,6 +9,8 @@
 
 UptimeBox::UptimeBox(int x, int y) : _box(newwin(5, 72, y, x)), _height(5) {}
 
+UptimeBox::UptimeBox() : _box(newwin(5, 72, 0, 0)), _height(5) {}
+
 UptimeBox::~UptimeBox() {
     if (_box)
         delwin(_box);

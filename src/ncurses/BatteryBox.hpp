@@ -28,6 +28,7 @@ class BatteryBox : public IBox {
     public:
         /* Const / Destr */
         BatteryBox(int x, int y);
+        BatteryBox();
         ~BatteryBox();
 
         /* Getters */

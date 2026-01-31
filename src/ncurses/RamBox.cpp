@@ -9,6 +9,8 @@
 
 RamBox::RamBox(int x, int y) : _box(newwin(7, 72, y, x)), _height(7) {}
 
+RamBox::RamBox() : _box(newwin(7, 72, 0, 0)), _height(7) {}
+
 RamBox::~RamBox() {
     if (_box)
         delwin(_box);

@@ -28,6 +28,7 @@ class UptimeBox : public IBox {
     public:
         /* Const / Destr */
         UptimeBox(int x, int y);
+        UptimeBox();
         ~UptimeBox() override;
 
         /* Getters */

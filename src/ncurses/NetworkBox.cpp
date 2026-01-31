@@ -10,6 +10,8 @@
 
 NetworkBox::NetworkBox(int x, int y) : _box(newwin(25, 72, y, x)), _downloadHisto{}, _updateHisto{}, _lastUpdate(time(nullptr)), _height(25) {}
 
+NetworkBox::NetworkBox() : _box(newwin(25, 72, 0, 0)), _downloadHisto{}, _updateHisto{}, _lastUpdate(time(nullptr)), _height(25) {}
+
 NetworkBox::~NetworkBox()
 {
     if (_box)

@@ -28,6 +28,7 @@ class OsBox : public IBox {
     public:
         /* Const / Destr */
         OsBox(int x, int y);
+        OsBox();
         ~OsBox() override;
 
         /* Getters */

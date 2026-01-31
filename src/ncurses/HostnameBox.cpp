@@ -9,6 +9,8 @@
 
 HostnameBox::HostnameBox(int x, int y) : _box(newwin(5, 72, y, x)), _height(5) {}
 
+HostnameBox::HostnameBox() : _box(newwin(5, 72, 0, 0)), _height(5) {}
+
 HostnameBox::~HostnameBox()
 {
     if (_box)

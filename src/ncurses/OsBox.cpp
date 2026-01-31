@@ -9,6 +9,8 @@
 
 OsBox::OsBox(int x, int y) : _box(newwin(5, 72, y, x)), _height(5) {}
 
+OsBox::OsBox() : _box(newwin(5, 72, 0, 0)), _height(5) {}
+
 OsBox::~OsBox() {
     if (_box)
         delwin(_box);
