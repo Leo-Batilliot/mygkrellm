@@ -24,14 +24,27 @@ class OSModule : public Krell::IModule {
         void update() override
         {
             struct utsname buffer;
-
             if (uname(&buffer) != -1) {
-                _data["Operating system"] = std::string(buffer.sysname);
                 _data["Kernel"] = std::string(buffer.release);
             } else {
-                _data["Operating system"] = "Unknown";
                 _data["Kernel"] = "Unknown";
             }
+
+            std::ifstream file("/etc/os-release");
+            std::string line;
+            std::string osName = "Linux (Unknown)";
+            if (file.is_open()) {
+                while (std::getline(file, line)) {
+                    if (line.find("NAME=") == 0) {
+                        osName = line.substr(5);
+                        if (osName.size() > 1 && osName.front() == '"' && osName.back() == '"') {
+                            osName = osName.substr(1, osName.size() - 2);
+                        }
+                        break;
+                    }
+                }
+            }
+            _data["Operating system"] = osName;
         }
 
         std::string getName() const override {return _name;}
