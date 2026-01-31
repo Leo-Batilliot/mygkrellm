@@ -12,6 +12,7 @@
 #include "ncurses/BatteryBox.hpp"
 #include "ncurses/UptimeBox.hpp"
 #include "ncurses/TemperatureBox.hpp"
+#include "ncurses/DiskBox.hpp"
 #include "ncurses/IBox.hpp"
 
 NcursesDisplay::~NcursesDisplay()
@@ -39,6 +40,7 @@ void NcursesDisplay::init()
     _boxes.push_back(new BatteryBox(2, 19));
     _boxes.push_back(new UptimeBox(2, 26));
     _boxes.push_back(new TemperatureBox(2, 31));
+    _boxes.push_back(new DiskBox(120, 2));
 
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
