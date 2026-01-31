@@ -17,6 +17,7 @@
 
 NcursesDisplay::~NcursesDisplay()
 {
+    stop();
 }
 
 void NcursesDisplay::init()
@@ -26,6 +27,7 @@ void NcursesDisplay::init()
     raw();
     curs_set(0);
     start_color();
+    timeout(50);
     use_default_colors(); 
     init_pair(1, COLOR_RED, -1);
     init_pair(2, COLOR_YELLOW, -1);
@@ -42,62 +44,91 @@ void NcursesDisplay::init()
     _boxes.push_back(new CpuBox());
     _boxes.push_back(new NetworkBox());
   
+    _pad = newpad(2000, 500); 
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
 }
 
 void NcursesDisplay::stop()
 {
-    if (_window) {
-        delwin(_window);
-        _window = nullptr;
-    }
     for (IBox *b : _boxes) {
-        if (b)
-            delete b;
+        delete b;
     }
     _boxes.clear();
-    endwin();
+    if (!isendwin()) {
+        endwin();
+    }
+    if (_pad) {
+        delwin(_pad);
+        _pad = nullptr;
+    }
 }
 
 void NcursesDisplay::display(const std::vector<Krell::IModule *> &modules)
 {
-    erase(); 
-
-    //box(stdscr, 0, 0);
-    mvprintw(1, 2, "MyGKrellm (press q to quit, s to switch)");
+    _lastModules = &modules;
+    werase(_pad);
+    wattrset(_pad, A_NORMAL);
     
-    wnoutrefresh(stdscr);
+    int currentY = 0;
+    int width = COLS;
 
-    for (auto module : modules) {
-        for (int i = _iterator; i < (int)_boxes.size(); i++) {
-            if (_boxes[i]->getModuleNeeded() == module->getName()) {
-                _boxes[i]->display(module);
-                if (i == _iterator)
-                    _boxes[i]->setYPos(2);
-                else
-                    _boxes[i]->setYPos(_boxes[i - 1]->getYPos() + _boxes[i - 1]->getHeight() + 1);
+    for (auto* module : modules) {
+        if (!module) continue;
+        
+        std::string name = module->getName();
+
+        if (_hiddenModules[name] == true)
+            continue;
+
+        for (auto &box : _boxes) {
+            if (box->getModuleNeeded() == name) {
+                box->setYPos(currentY, width);
+                box->display(module);
+
+                copywin(box->getWin(), _pad, 0, 0, currentY, 0, currentY + box->getHeight() - 1, width - 1, FALSE);
+                currentY += box->getHeight();
+                break;
             }
         }
     }
+    
+    _totalContentHeight = currentY;
+
+    // Rendu final
+    pnoutrefresh(_pad, _scrollOffset, 0, 0, 0, LINES - 1, COLS - 1);
     doupdate();
 }
 
-int NcursesDisplay::handle_inputs()
-{
+int NcursesDisplay::handle_inputs() {
     int ch = getch();
+    int idx = -1;
 
-    if (ch == KEY_DOWN)
-        _iterator++;
-    if (ch == KEY_UP)
-        _iterator--;
-    if (ch == ' ')
-        _iterator = 0;
-    if (_iterator >= (int)_boxes.size()) {
-        _iterator = 0;
+    if (ch >= '1' && ch <= '9')
+        idx = ch - '1';
+    else if (ch == '0')
+        idx = 9;
+
+    if (_lastModules && idx != -1 && idx < (int)_lastModules->size()) {
+        std::string name = (*_lastModules)[idx]->getName();
+        _hiddenModules[name] = !_hiddenModules[name];
     }
-    if (_iterator < 0) {
-        _iterator = _boxes.size() - 1;
+
+    if (ch == KEY_DOWN) {
+        _scrollOffset += 2;
+    }
+    if (ch == KEY_UP) {
+        _scrollOffset -= 2;
+    }
+    if (_scrollOffset < 0) {
+        _scrollOffset = 0;
+    }
+    int maxScroll = _totalContentHeight - LINES;
+    if (maxScroll < 0) {
+        maxScroll = 0;
+    }
+    if (_scrollOffset > maxScroll) {
+        _scrollOffset = maxScroll;
     }
 
     if (ch == 'q') return 1;

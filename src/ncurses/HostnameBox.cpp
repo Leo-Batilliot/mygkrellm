@@ -29,10 +29,10 @@ int HostnameBox::getHeight() const {
     return _height;
 }
 
-void HostnameBox::setYPos(int y) {
+void HostnameBox::setYPos(int y, int width) {
     if (_box)
         delwin(_box);
-    _box = newwin(_height, 72, y, 2);
+    _box = newwin(_height, width, y, 0);
 }
 
 int HostnameBox::getYPos() const {
@@ -42,10 +42,13 @@ int HostnameBox::getYPos() const {
 
 void HostnameBox::display(Krell::IModule *module) {
     if (!_box) return;
+    int winW, winH;
+    getmaxyx(_box, winH, winW);
+    (void)winH;
     const std::map<std::string, std::string> data = module->getData();
 
-    std::string hostname = data.at("Hostname");
-    std::string username = data.at("Username");
+    std::string hostname = safeGet(data, "Hostname");
+    std::string username = safeGet(data, "Username");
 
     werase(_box);
     box(_box, 0, 0);

@@ -20,7 +20,7 @@ class DiskBox : public IBox {
         void display(Krell::IModule *module) override;
         WINDOW *getWin() const override;
         std::string getModuleNeeded() const override;
-        void setYPos(int y) override;
+        void setYPos(int y, int width) override;
         int getYPos() const override;
         int getHeight() const override;
 

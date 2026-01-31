@@ -13,7 +13,7 @@
 
 class NcursesDisplay : public Krell::IDisplay {
     public:
-        NcursesDisplay() :  _window(nullptr), _ramBox(nullptr), _iterator(0) {};
+        NcursesDisplay() : _window(nullptr), _ramBox(nullptr), _lastModules(nullptr), _iterator(0) {};
         ~NcursesDisplay() override;
 
         void init() override;
@@ -23,9 +23,14 @@ class NcursesDisplay : public Krell::IDisplay {
 
     protected:
     private:
+        WINDOW *_pad = nullptr;
+        int _scrollOffset = 0;
+        int _totalContentHeight = 0;
         WINDOW *_window;
         RamBox *_ramBox;
         std::vector<IBox*> _boxes;
+        std::map<std::string, bool> _hiddenModules;
+        const std::vector<Krell::IModule *> *_lastModules;
         int _iterator;
 };
 

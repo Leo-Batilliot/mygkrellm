@@ -28,10 +28,10 @@ WINDOW *RamBox::getWin() const {
     return _box;
 }
 
-void RamBox::setYPos(int y) {
+void RamBox::setYPos(int y, int width) {
     if (_box)
         delwin(_box);
-    _box = newwin(_height, 72, y, 2);
+    _box = newwin(_height, width, y, 0);
 }
 
 int RamBox::getYPos() const {
@@ -41,11 +41,14 @@ int RamBox::getYPos() const {
 
 void RamBox::display(Krell::IModule *module) {
     if (!_box) return;
+    int winW, winH;
+    getmaxyx(_box, winH, winW);
+    (void)winH;
     const std::map<std::string, std::string> data = module->getData();
 
-    float totalUsage = std::stof(data.at("Used"));
-    float total = std::stof(data.at("Total"));
-    float percent = std::stof(data.at("Percent"));
+    float totalUsage = std::stof(safeGet(data, "Used"));
+    float total = std::stof(safeGet(data, "Total"));
+    float percent = std::stof(safeGet(data, "Percent"));
     float free = total - totalUsage;
 
     werase(_box);

@@ -24,10 +24,10 @@ int CpuBox::getHeight() const {
     return _height;
 }
 
-void CpuBox::setYPos(int y) {
+void CpuBox::setYPos(int y, int width) {
     if (_box)
         delwin(_box);
-    _box = newwin(_height, 72, y, 2);
+    _box = newwin(_height, width, y, 0);
 }
 
 int CpuBox::getYPos() const {
@@ -45,13 +45,16 @@ void CpuBox::display(Krell::IModule *module) {
     CpuModule *cpuModule = dynamic_cast<CpuModule *>(module);
     if (!cpuModule)
         return;
+    int winW, winH;
+    getmaxyx(_box, winH, winW);
+    (void)winH;
     const std::map<std::string, std::string> data = cpuModule->getData();
-    std::string model = data.at("Model");
+    std::string model = safeGet(data, "Model");
 
     std::map<std::string, std::string> &coresUsage = cpuModule->getCoreUsage();
     int nbCores = coresUsage.size();
     int height = 8 + (nbCores / 2) + (nbCores % 2);
-    wresize(_box, height + 1, 72);
+    wresize(_box, height + 1, winW);
     _height = height + 1;
 
     wnoutrefresh(_box);
@@ -64,11 +67,11 @@ void CpuBox::display(Krell::IModule *module) {
     wattroff(_box, COLOR_PAIR(1));
     mvwprintw(_box, 0, 10, "=");
     wattroff(_box, A_BOLD);
-    mvwprintw(_box, 2, 3, "Model : %s", data.at("Model").c_str());
-    mvwprintw(_box, 3, 3, "Freq  : %s", data.at("Frequency").c_str());
-    mvwprintw(_box, 3, 35, "Cores : %s", data.at("Cores").c_str());
+    mvwprintw(_box, 2, 3, "Model : %s", safeGet(data, "Model").c_str());
+    mvwprintw(_box, 3, 3, "Freq  : %s", safeGet(data, "Frequency").c_str());
+    mvwprintw(_box, 3, 35, "Cores : %s", safeGet(data, "Cores").c_str());
 
-    float globalUsage = std::stof(data.at("Usage"));
+    float globalUsage = std::stof(safeGet(data, "Usage"));
     mvwprintw(_box, 5, 3, "Usage: [");
     
     int barSize = 50;

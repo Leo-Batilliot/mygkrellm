@@ -11,6 +11,10 @@ SfmlDisplay::~SfmlDisplay() {}
 
 void SfmlDisplay::init()
 {
+    if (std::getenv("DISPLAY") == nullptr) {
+        throw std::runtime_error("No GUI set");
+    }
+
     _window.create(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), WIN_TITLE);
 
     if (!_window.isOpen())
