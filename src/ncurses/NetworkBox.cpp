@@ -79,7 +79,7 @@ void NetworkBox::display(Krell::IModule *module) {
     wattron(_box, COLOR_PAIR(1));
     mvwprintw(_box, 0, 5, " Network ");
     wattroff(_box, COLOR_PAIR(1));
-    mvwprintw(_box, 0, 15, "=");
+    mvwprintw(_box, 0, 14, "=");
     wattroff(_box, A_BOLD);
 
     mvwprintw(_box, 1, 1, "Download: %s | Highest: %i", data.at("Download").c_str(), _highestDL);

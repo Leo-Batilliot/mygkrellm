@@ -15,8 +15,8 @@
 class OsBox : public IBox {
     private:
         /* Attributs */
-        int _height;
         WINDOW *_box;
+        int _height;
 
         /* Methods */
 

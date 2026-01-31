@@ -70,7 +70,7 @@ void NcursesDisplay::display(const std::vector<Krell::IModule *> &modules)
     wnoutrefresh(stdscr);
 
     for (auto module : modules) {
-        for (int i = _iterator; i < _boxes.size(); i++) {
+        for (int i = _iterator; i < (int)_boxes.size(); i++) {
             if (_boxes[i]->getModuleNeeded() == module->getName()) {
                 _boxes[i]->display(module);
                 if (i == _iterator)
@@ -91,7 +91,7 @@ int NcursesDisplay::handle_inputs()
         _iterator++;
     if (ch == KEY_UP)
         _iterator--;
-    if (_iterator >= _boxes.size()) {
+    if (_iterator >= (int)_boxes.size()) {
         _iterator = 0;
     }
     if (_iterator < 0) {
