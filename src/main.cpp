@@ -33,16 +33,17 @@ int main(int ac, char **av)
     }
 
     std::vector<Krell::IModule *> modules;
-    modules.push_back(new Hostname());
-    modules.push_back(new OSModule());
+    modules.push_back(new BatteryModule());
     modules.push_back(new DateTime());
+    modules.push_back(new OSModule());
+    modules.push_back(new Hostname());
     modules.push_back(new CpuModule());
     modules.push_back(new RamModule());
+    modules.push_back(new DiskModule());
     modules.push_back(new NetworkModule());
-    modules.push_back(new BatteryModule());
     modules.push_back(new UptimeModule());
     modules.push_back(new TemperatureModule());
-    modules.push_back(new DiskModule());
+    
 
     display->init();
     sf::Clock updateClock;
