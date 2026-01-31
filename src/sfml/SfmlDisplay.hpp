@@ -31,6 +31,8 @@ class SfmlDisplay : public Krell::IDisplay {
     private:
         sf::RenderWindow _window;
         sf::Font _font;
+        sf::Texture _lightningTexture;
+        sf::Sprite _lightningSprite;
         std::vector<ModuleWrapper> _modules;
         
         int _draggedIdx = -1;
@@ -44,7 +46,7 @@ class SfmlDisplay : public Krell::IDisplay {
 
         void syncModules(const std::vector<Krell::IModule *> &modules);
         void renderStaticStack(float &currentY, sf::Vector2i mousePos, float width, float startX);
-        void renderPreviewLine();
+        void renderPreviewLine(float width, float startX);
         void renderDraggedModule(sf::Vector2i mousePos, float width);
         void drawModule(ModuleWrapper &wrapper, sf::Vector2f pos, float width);
         void drawHostname(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
@@ -54,6 +56,9 @@ class SfmlDisplay : public Krell::IDisplay {
         void drawOS(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
         void drawRam(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
         void drawBattery(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
+        void drawUptime(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
+        void drawTemperature(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
+        void drawDisk(const std::map<std::string, std::string>& data, sf::Vector2f pos, float& ty);
 
         std::string safeGet(const std::map<std::string, std::string>& data, const std::string& key);
 };

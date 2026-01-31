@@ -17,6 +17,9 @@ SRC	=	src/main.cpp \
 		src/sfml/DrawOS.cpp \
 		src/sfml/DrawRam.cpp \
 		src/sfml/DrawBattery.cpp \
+		src/sfml/DrawUptime.cpp \
+		src/sfml/DrawTemperature.cpp \
+		src/sfml/DrawDisk.cpp \
 		src/sfml/SfmlUtils.cpp \
 		src/ncurses/NcuresesDisplay.cpp \
 		src/ncurses/NetworkBox.cpp \
@@ -24,6 +27,10 @@ SRC	=	src/main.cpp \
 		src/ncurses/CpuBox.cpp \
 		src/ncurses/TimeBox.cpp \
 		src/ncurses/HostnameBox.cpp \
+		src/ncurses/TemperatureBox.cpp \
+		src/ncurses/OsBox.cpp \
+		src/ncurses/BatteryBox.cpp \
+		src/ncurses/UptimeBox.cpp \
 
 # COLORS
 RED=\033[31m

@@ -31,7 +31,12 @@ void CpuBox::display(Krell::IModule *module) {
     const std::map<std::string, std::string> data = cpuModule->getData();
     std::string model = data.at("Model");
 
+    std::map<std::string, std::string> &coresUsage = cpuModule->getCoreUsage();
+    int nbCores = coresUsage.size();
+    int height = 8 + (nbCores / 2) + (nbCores % 2);
+    wresize(_box, height, 75);
 
+    wnoutrefresh(_box);
     werase(_box);
     box(_box, 0, 0);
     wattron(_box, A_BOLD);
@@ -65,7 +70,6 @@ void CpuBox::display(Krell::IModule *module) {
     mvwprintw(_box, 5, 12 + barSize, "] %.1f%%", globalUsage);
     int row = 7;
     int col = 0;
-    std::map<std::string, std::string> &coresUsage = cpuModule->getCoreUsage();
     for (auto const& [core, usage] : coresUsage) {
         int xPos = (col % 2 == 0) ? 3 : 35;
         mvwprintw(_box, row + (col / 2), xPos, "%s: %s", core.c_str(), usage.c_str());

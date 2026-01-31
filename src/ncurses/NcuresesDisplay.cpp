@@ -8,6 +8,11 @@
 #include "ncurses/TimeBox.hpp"
 #include "ncurses/HostnameBox.hpp"
 #include "ncurses/NetworkBox.hpp"
+#include "ncurses/OsBox.hpp"
+#include "ncurses/BatteryBox.hpp"
+#include "ncurses/UptimeBox.hpp"
+#include "ncurses/TemperatureBox.hpp"
+#include "ncurses/IBox.hpp"
 
 NcursesDisplay::~NcursesDisplay()
 {
@@ -25,12 +30,15 @@ void NcursesDisplay::init()
     init_pair(2, COLOR_YELLOW, -1);
     init_pair(3, COLOR_GREEN, -1);
 
-    // create boxes and register them
     _boxes.push_back(new TimeBox(2, 2));
     _boxes.push_back(new HostnameBox(2, 7));
-    _boxes.push_back(new CpuBox(2, 12));
-    _boxes.push_back(new RamBox(2, 29));
     _boxes.push_back(new NetworkBox(80, 12));
+    _boxes.push_back(new OsBox(2, 12));
+    _boxes.push_back(new CpuBox(77, 14));
+    _boxes.push_back(new RamBox(2, 17));
+    _boxes.push_back(new BatteryBox(2, 24));
+    _boxes.push_back(new UptimeBox(2, 31));
+    _boxes.push_back(new TemperatureBox(77, 2));
 
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
