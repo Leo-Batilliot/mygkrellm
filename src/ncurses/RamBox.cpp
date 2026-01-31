@@ -1,17 +1,17 @@
 /*
 ** EPITECH PROJECT, 2026
-** RamWindow
+** RamBox
 ** File description:
-** functions of RamWindow
+** functions of RamBox
 */
 
-#include "RamWindow.hpp"
+#include "RamBox.hpp"
 
-RamWindow::RamWindow() : _RamWin(nullptr) {}
+RamBox::RamBox() : _RamWin(nullptr) {}
 
-RamWindow::~RamWindow() {}
+RamBox::~RamBox() {}
 
-void RamWindow::displayRamMod() {
+void RamBox::displayRamMod() {
      if (!_RamWin)
         _RamWin = newwin(7, 72, 2, 2);
     const std::map<std::string, std::string> data = getData();

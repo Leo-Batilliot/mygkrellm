@@ -1,12 +1,12 @@
 /*
 ** EPITECH PROJECT, 2026
-** RamWindow
+** RamBox
 ** File description:
-** RamWindow def
+** RamBox def
 */
 
-#ifndef RAMMWINDOW
-    #define RAMWINDOW
+#ifndef RAMBOX
+    #define RAMBOX
 
     #include <iostream>
     #include <string>
@@ -14,7 +14,7 @@
     #include "interfaces/IModule.hpp"
     #include "modules/RamModule.hpp"
 
-class RamWindow : public RamModule{
+class RamBox : public RamModule{
     private:
         /* Attributs */
         WINDOW *_RamWin;
@@ -28,8 +28,8 @@ class RamWindow : public RamModule{
 
     public:
         /* Const / Destr */
-        RamWindow();
-        ~RamWindow() override;
+        RamBox();
+        ~RamBox() override;
 
         /* Getters */
 
