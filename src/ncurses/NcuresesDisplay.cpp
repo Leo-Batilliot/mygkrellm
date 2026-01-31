@@ -40,7 +40,7 @@ void NcursesDisplay::init()
     _boxes.push_back(new RamBox());
     _boxes.push_back(new CpuBox());
     _boxes.push_back(new NetworkBox());
-    _boxes.push_back(new DiskBox(120, 2));
+    _boxes.push_back(new DiskBox());
   
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
