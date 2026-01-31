@@ -9,6 +9,7 @@
 #include "ncurses/BatteryBox.hpp"
 #include "ncurses/UptimeBox.hpp"
 #include "ncurses/TemperatureBox.hpp"
+#include "ncurses/IBox.hpp"
 
 NcursesDisplay::~NcursesDisplay()
 {

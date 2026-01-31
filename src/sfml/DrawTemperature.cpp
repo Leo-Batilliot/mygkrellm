@@ -40,10 +40,10 @@ void SfmlDisplay::drawTemperature(const std::map<std::string, std::string>& data
     sf::RectangleShape bgBar(sf::Vector2f(barWidth, barHeight));
     bgBar.setPosition(pos.x + VALUE_X_OFFSET + 80, ty);
     bgBar.setFillColor(sf::Color(40, 40, 40));
-    _window.draw(bgBar);
-
+    
     float ratio = std::min(std::max(tempVal / 100.0f, 0.0f), 1.0f);
     if (ratio > 0) {
+        _window.draw(bgBar);
         sf::RectangleShape fillBar(sf::Vector2f(barWidth * ratio, barHeight));
         fillBar.setPosition(pos.x + VALUE_X_OFFSET + 80, ty);
         fillBar.setFillColor(tempColor);
