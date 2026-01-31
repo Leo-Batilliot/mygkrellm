@@ -7,7 +7,7 @@
 
 #include "HostnameBox.hpp"
 
-HostnameBox::HostnameBox(int x, int y) : _box(newwin(5, 72, y, x)) {}
+HostnameBox::HostnameBox(int x, int y) : _box(newwin(5, 72, y, x)), _height(5) {}
 
 HostnameBox::~HostnameBox()
 {
@@ -21,6 +21,21 @@ std::string HostnameBox::getModuleNeeded() const {
 
 WINDOW *HostnameBox::getWin() const {
     return _box;
+}
+
+int HostnameBox::getHeight() const {
+    return _height;
+}
+
+void HostnameBox::setYPos(int y) {
+    if (_box)
+        delwin(_box);
+    _box = newwin(_height, 72, y, 2);
+}
+
+int HostnameBox::getYPos() const {
+    if (!_box) return 0;
+    return getbegy(_box);
 }
 
 void HostnameBox::display(Krell::IModule *module) {

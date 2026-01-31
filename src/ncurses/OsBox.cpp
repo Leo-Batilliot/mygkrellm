@@ -7,7 +7,7 @@
 
 #include "OsBox.hpp"
 
-OsBox::OsBox(int x, int y) : _box(newwin(5, 72, y, x)) {}
+OsBox::OsBox(int x, int y) : _box(newwin(5, 72, y, x)), _height(5) {}
 
 OsBox::~OsBox() {
     if (_box)
@@ -18,8 +18,23 @@ std::string OsBox::getModuleNeeded() const {
     return "OS & Kernel";
 }
 
+int OsBox::getHeight() const {
+    return _height;
+}
+
 WINDOW *OsBox::getWin() const {
     return _box;
+}
+
+void OsBox::setYPos(int y) {
+    if (_box)
+        delwin(_box);
+    _box = newwin(_height, 72, y, 2);
+}
+
+int OsBox::getYPos() const {
+    if (!_box) return 0;
+    return getbegy(_box);
 }
 
 void OsBox::display(Krell::IModule *module) {

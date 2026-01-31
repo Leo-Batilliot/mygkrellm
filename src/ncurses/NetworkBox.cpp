@@ -8,12 +8,27 @@
 #include "NetworkBox.hpp"
 #include <iostream>
 
-NetworkBox::NetworkBox(int x, int y) : _box(newwin(25, 75, y, x)), _downloadHisto{}, _updateHisto{}, _lastUpdate(time(nullptr)) {}
+NetworkBox::NetworkBox(int x, int y) : _box(newwin(25, 72, y, x)), _downloadHisto{}, _updateHisto{}, _lastUpdate(time(nullptr)), _height(25) {}
 
 NetworkBox::~NetworkBox()
 {
     if (_box)
         delwin(_box);
+}
+
+void NetworkBox::setYPos(int y) {
+    if (_box)
+        delwin(_box);
+    _box = newwin(_height, 72, y, 2);
+}
+
+int NetworkBox::getYPos() const {
+    if (!_box) return 0;
+    return getbegy(_box);
+}
+
+int NetworkBox::getHeight() const {
+    return _height;
 }
 
 std::string NetworkBox::getModuleNeeded() const {

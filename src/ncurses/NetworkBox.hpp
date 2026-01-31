@@ -23,6 +23,9 @@ class NetworkBox : public IBox {
         void display(Krell::IModule *module) override;
         WINDOW *getWin() const override;
         std::string getModuleNeeded() const override;
+        int getHeight() const override;
+        void setYPos(int y) override;
+        int getYPos() const override;
 
     protected:
     private:
@@ -32,6 +35,7 @@ class NetworkBox : public IBox {
         time_t _lastUpdate;
         int _highestDL = 0;
         int _highestUP = 0;
+        int _height;
 };
 
 #endif /* !NETWORKBOX_HPP_ */

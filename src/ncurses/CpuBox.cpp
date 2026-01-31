@@ -7,7 +7,7 @@
 
 #include "CpuBox.hpp"
 
-CpuBox::CpuBox(int x, int y) : _box(newwin(16, 75, y, x)) {}
+CpuBox::CpuBox(int x, int y) : _box(newwin(16, 72, y, x)), _height(16) {}
 
 CpuBox::~CpuBox() {
     if (_box)
@@ -16,6 +16,21 @@ CpuBox::~CpuBox() {
 
 WINDOW *CpuBox::getWin() const {
     return _box;
+}
+
+int CpuBox::getHeight() const {
+    return _height;
+}
+
+void CpuBox::setYPos(int y) {
+    if (_box)
+        delwin(_box);
+    _box = newwin(_height, 72, y, 2);
+}
+
+int CpuBox::getYPos() const {
+    if (!_box) return 0;
+    return getbegy(_box);
 }
 
 std::string CpuBox::getModuleNeeded() const {

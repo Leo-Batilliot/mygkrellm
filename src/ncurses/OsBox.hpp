@@ -15,6 +15,7 @@
 class OsBox : public IBox {
     private:
         /* Attributs */
+        int _height;
         WINDOW *_box;
 
         /* Methods */
@@ -39,6 +40,9 @@ class OsBox : public IBox {
         void display(Krell::IModule *module) override;
         WINDOW *getWin() const override;
         std::string getModuleNeeded() const override;
+        int getHeight() const override;
+        void setYPos(int y) override;
+        int getYPos() const override;
 };
 
 #endif

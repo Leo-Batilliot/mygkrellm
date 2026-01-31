@@ -7,7 +7,7 @@
 
 #include "RamBox.hpp"
 
-RamBox::RamBox(int x, int y) : _box(newwin(7, 72, y, x)) {}
+RamBox::RamBox(int x, int y) : _box(newwin(7, 72, y, x)), _height(7) {}
 
 RamBox::~RamBox() {
     if (_box)
@@ -18,8 +18,23 @@ std::string RamBox::getModuleNeeded() const {
     return "RAM";
 }
 
+int RamBox::getHeight() const {
+    return _height;
+}
+
 WINDOW *RamBox::getWin() const {
     return _box;
+}
+
+void RamBox::setYPos(int y) {
+    if (_box)
+        delwin(_box);
+    _box = newwin(_height, 72, y, 2);
+}
+
+int RamBox::getYPos() const {
+    if (!_box) return 0;
+    return getbegy(_box);
 }
 
 void RamBox::display(Krell::IModule *module) {
