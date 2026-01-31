@@ -19,7 +19,12 @@ class DateTime : public Krell::IModule {
         std::map<std::string, std::string> _data;
 
     public:
-        DateTime() : _name("Date & Time") {update();}
+        DateTime() : _name("Date & Time")
+        {
+            _data["Date"] = "Unknown";
+            _data["Time"] = "unknown";
+            update();
+        }
         virtual ~DateTime() = default;
 
         void update() override

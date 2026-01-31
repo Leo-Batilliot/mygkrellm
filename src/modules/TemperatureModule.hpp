@@ -38,6 +38,7 @@ class TemperatureModule : public Krell::IModule {
     public:
         TemperatureModule() : _name("Temperature")
         {
+            _data["Temp"] = "Unknown";
             findSensor();
             update();
         }

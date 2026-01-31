@@ -34,7 +34,14 @@ class CpuModule : public Krell::IModule {
         }
 
     public:
-        CpuModule() : _name("CPU") {update();}
+        CpuModule() : _name("CPU")
+        {
+            _data["Model"] = "Unknown CPU";
+            _data["Cores"] = "0";
+            _data["Frequency"] = "0.00 GHz";
+            _data["Usage"] = "0%";
+            update();
+        }
         virtual ~CpuModule() = default;
 
         void update() override
