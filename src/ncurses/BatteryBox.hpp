@@ -21,7 +21,7 @@ class BatteryBox : public IBox {
 
     protected:
         /* Attributs */
-        WINDOW *_box;
+
         /* Methods */
 
     public:
