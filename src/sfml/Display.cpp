@@ -21,7 +21,7 @@ void SfmlDisplay::renderStaticStack(float &currentY, sf::Vector2i mousePos, floa
         _targetIdx = _modules.size();
 }
 
-void SfmlDisplay::renderPreviewLine()
+void SfmlDisplay::renderPreviewLine(float width, float startX)
 {
     float py = START_Y;
 
@@ -29,10 +29,9 @@ void SfmlDisplay::renderPreviewLine()
         if (i != _draggedIdx && _modules[i].isVisible)
             py += _modules[i].background.getSize().y + MOD_MARGIN;
     }
-
-    sf::RectangleShape line(sf::Vector2f(MOD_WIDTH, 3));
+    sf::RectangleShape line(sf::Vector2f(width, 3));
     line.setFillColor(COLOR_PREVIEW);
-    line.setPosition(START_X, py - (MOD_MARGIN / 2.0f) - 4);
+    line.setPosition(startX, py - (MOD_MARGIN / 2.0f) - 4);
     _window.draw(line);
 }
 
@@ -83,7 +82,7 @@ void SfmlDisplay::display(const std::vector<Krell::IModule *> &modules)
     _window.draw(leftMask);
 
     if (_draggedIdx != -1) {
-        renderPreviewLine();
+        renderPreviewLine(dynamicWidth, dynamicStartX);
         renderDraggedModule(mousePos, dynamicWidth);
     }
 
@@ -94,7 +93,7 @@ void SfmlDisplay::drawModule(ModuleWrapper &wrapper, sf::Vector2f pos, float wid
 {
     std::string name = wrapper.module->getName();
     const auto &data = wrapper.module->getData();
-    float ty = pos.y + 25; 
+    float ty = pos.y + 18; 
 
     wrapper.background.setSize(sf::Vector2f(width, wrapper.background.getSize().y));
     wrapper.background.setPosition(pos);
@@ -125,6 +124,9 @@ void SfmlDisplay::drawModule(ModuleWrapper &wrapper, sf::Vector2f pos, float wid
     else if (name == "OS & Kernel") drawOS(data, pos, ty);
     else if (name == "RAM") drawRam(data, pos, ty);
     else if (name == "Battery") drawBattery(data, pos, ty);
+    else if (name == "Uptime") drawUptime(data, pos, ty);
+    else if (name == "Temperature") drawTemperature(data, pos, ty);
+    else if (name == "Disk") drawDisk(data, pos, ty);
 
-    wrapper.background.setSize(sf::Vector2f(MOD_WIDTH, ty - pos.y + 10));
+    wrapper.background.setSize(sf::Vector2f(width, ty - pos.y + 10));
 }

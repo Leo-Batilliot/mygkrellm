@@ -58,7 +58,28 @@ void SfmlDisplay::drawBattery(const std::map<std::string, std::string>& data, sf
 
     sf::Text value_status(status_val, _font, 16);
     value_status.setPosition(pos.x + VALUE_X_OFFSET, ty - 28);
-    value_status.setFillColor((status_val == "Charging") ? sf::Color::Green : COLOR_VALUE);
+    value_status.setFillColor(
+        (status_val == "Charging") ? sf::Color::Green :
+        (status_val == "Discharging") ? sf::Color::White :
+        COLOR_VALUE
+    );
     _window.draw(value_status);
 
+    if (status_val == "Charging") {
+        sf::Sprite lightning = _lightningSprite;
+        lightning.setRotation(270);
+
+        float targetHeight = logo_h * 1.5f;
+        sf::Vector2u texSize = _lightningTexture.getSize();
+
+        float scale = targetHeight / texSize.y;
+        lightning.setScale(scale, scale);
+
+        sf::FloatRect bounds = lightning.getGlobalBounds();
+        float centerX = logo_x + logo_w / 2 - bounds.width / 2;
+        float centerY = logo_y + logo_h / 2 - bounds.height / 2;
+        lightning.setPosition(centerX, centerY + 30);
+
+        _window.draw(lightning);
+    }
 }

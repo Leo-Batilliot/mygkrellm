@@ -17,6 +17,9 @@ SRC	=	src/main.cpp \
 		src/sfml/DrawOS.cpp \
 		src/sfml/DrawRam.cpp \
 		src/sfml/DrawBattery.cpp \
+		src/sfml/DrawUptime.cpp \
+		src/sfml/DrawTemperature.cpp \
+		src/sfml/DrawDisk.cpp \
 		src/sfml/SfmlUtils.cpp \
 		src/ncurses/NcuresesDisplay.cpp \
 		src/ncurses/RamBox.cpp \

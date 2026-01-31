@@ -6,7 +6,7 @@
 // Window Settings
 #define WIN_WIDTH 800
 #define WIN_HEIGHT 1080
-#define WIN_TITLE "MyGKrellm"
+#define WIN_TITLE "MyGKrellm SFML"
 #define FRAME_LIMIT 60
 
 // Visual Settings
@@ -31,5 +31,6 @@
 
 // Assets
 #define FONT_PATH "src/assets/fonts/Inter.ttf"
+#define LIGHTNING_PATH "src/assets/images/lightning2.png"
 
 #endif
