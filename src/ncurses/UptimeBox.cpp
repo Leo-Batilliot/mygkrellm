@@ -47,5 +47,5 @@ void UptimeBox::display(Krell::IModule *module) {
     mvwprintw(_box, 2, 32, "%s", uptime.c_str());
     wattroff(_box, A_BOLD);
 
-    wrefresh(_box);
+    wnoutrefresh(_box);
 }

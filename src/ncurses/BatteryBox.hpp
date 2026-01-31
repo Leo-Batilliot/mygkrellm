@@ -15,12 +15,13 @@
 class BatteryBox : public IBox {
     private:
         /* Attributs */
+        WINDOW *_box;
 
         /* Methods */
 
     protected:
         /* Attributs */
-        WINDOW *_box;
+
         /* Methods */
 
     public:

@@ -24,6 +24,7 @@ SRC	=	src/main.cpp \
 		src/ncurses/NcuresesDisplay.cpp \
 		src/ncurses/RamBox.cpp \
 		src/ncurses/CpuBox.cpp \
+		src/ncurses/TemperatureBox.cpp \
 		src/ncurses/OsBox.cpp \
 		src/ncurses/BatteryBox.cpp \
 		src/ncurses/UptimeBox.cpp \

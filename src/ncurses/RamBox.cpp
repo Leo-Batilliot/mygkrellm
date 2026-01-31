@@ -32,6 +32,7 @@ void RamBox::display(Krell::IModule *module) {
     float free = total - totalUsage;
 
     werase(_box);
+    wnoutrefresh(_box);
     box(_box, 0, 0);
     
     // Titre
