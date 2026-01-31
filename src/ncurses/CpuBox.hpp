@@ -18,6 +18,7 @@ class CpuBox : public IBox {
     private:
         /* Attributs */
         WINDOW *_box;
+        int _height;
 
         /* Methods */
 
@@ -29,11 +30,14 @@ class CpuBox : public IBox {
     public:
         /* Const / Destr */
         CpuBox(int x, int y);
+        CpuBox();
         ~CpuBox() override;
 
         /* Getters */
 
         /* Setters */
+        void setYPos(int y) override;
+        int getYPos() const override;
 
         /* Operator */
 
@@ -42,6 +46,7 @@ class CpuBox : public IBox {
         void display(Krell::IModule *module) override;
         WINDOW *getWin() const override;
         std::string getModuleNeeded() const override;
+        int getHeight() const override;
 };
 
 #endif

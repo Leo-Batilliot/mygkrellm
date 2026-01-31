@@ -17,6 +17,7 @@ class RamBox : public IBox {
     private:
         /* Attributs */
         WINDOW *_box;
+        int _height;
 
         /* Methods */
 
@@ -28,6 +29,7 @@ class RamBox : public IBox {
     public:
         /* Const / Destr */
         RamBox(int x, int y);
+        RamBox();
         ~RamBox() override;
 
         /* Getters */
@@ -40,6 +42,9 @@ class RamBox : public IBox {
         void display(Krell::IModule *module) override;
         WINDOW *getWin() const override;
         std::string getModuleNeeded() const override;
+        int getHeight() const override;
+        void setYPos(int y) override;
+        int getYPos() const override;
 };
 
 #endif

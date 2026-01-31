@@ -31,17 +31,17 @@ void NcursesDisplay::init()
     init_pair(2, COLOR_YELLOW, -1);
     init_pair(3, COLOR_GREEN, -1);
 
-    _boxes.push_back(new TimeBox(2, 2));
-    _boxes.push_back(new HostnameBox(29, 2));
-    _boxes.push_back(new NetworkBox(77, 2));
-    _boxes.push_back(new OsBox(2, 7));
-    _boxes.push_back(new CpuBox(77, 27));
-    _boxes.push_back(new RamBox(2, 12));
-    _boxes.push_back(new BatteryBox(2, 19));
-    _boxes.push_back(new UptimeBox(2, 26));
-    _boxes.push_back(new TemperatureBox(2, 31));
+    _boxes.push_back(new TimeBox());
+    _boxes.push_back(new HostnameBox());
+    _boxes.push_back(new OsBox());
+    _boxes.push_back(new UptimeBox());
+    _boxes.push_back(new BatteryBox());
+    _boxes.push_back(new TemperatureBox());
+    _boxes.push_back(new RamBox());
+    _boxes.push_back(new CpuBox());
+    _boxes.push_back(new NetworkBox());
     _boxes.push_back(new DiskBox(120, 2));
-
+  
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
 }
@@ -64,15 +64,19 @@ void NcursesDisplay::display(const std::vector<Krell::IModule *> &modules)
 {
     erase(); 
 
-    box(stdscr, 0, 0);
+    //box(stdscr, 0, 0);
     mvprintw(1, 2, "MyGKrellm (press q to quit, s to switch)");
     
     wnoutrefresh(stdscr);
 
     for (auto module : modules) {
-        for (IBox *box : _boxes) {
-            if (box && box->getModuleNeeded() == module->getName()) {
-                box->display(module);
+        for (int i = _iterator; i < (int)_boxes.size(); i++) {
+            if (_boxes[i]->getModuleNeeded() == module->getName()) {
+                _boxes[i]->display(module);
+                if (i == _iterator)
+                    _boxes[i]->setYPos(2);
+                else
+                    _boxes[i]->setYPos(_boxes[i - 1]->getYPos() + _boxes[i - 1]->getHeight() + 1);
             }
         }
     }
@@ -82,6 +86,19 @@ void NcursesDisplay::display(const std::vector<Krell::IModule *> &modules)
 int NcursesDisplay::handle_inputs()
 {
     int ch = getch();
+
+    if (ch == KEY_DOWN)
+        _iterator++;
+    if (ch == KEY_UP)
+        _iterator--;
+    if (ch == ' ')
+        _iterator = 0;
+    if (_iterator >= (int)_boxes.size()) {
+        _iterator = 0;
+    }
+    if (_iterator < 0) {
+        _iterator = _boxes.size() - 1;
+    }
 
     if (ch == 'q') return 1;
     if (ch == 's') return 2;

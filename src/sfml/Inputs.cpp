@@ -54,6 +54,35 @@ int SfmlDisplay::handle_inputs()
             _targetIdx = -1;
         }
 
+        if (event.type == sf::Event::KeyPressed) {
+            int idx = -1;
+
+            if (event.key.code >= sf::Keyboard::Numpad0 && event.key.code <= sf::Keyboard::Numpad9) {
+                idx = (event.key.code == sf::Keyboard::Numpad0) ? 9 : (event.key.code - sf::Keyboard::Numpad1);
+            } 
+            else {
+                switch (event.key.code) {
+                    case sf::Keyboard::Num1: idx = 0; break;
+                    case sf::Keyboard::Num2: idx = 1; break;
+                    case sf::Keyboard::Num3: idx = 2; break;
+                    case sf::Keyboard::Quote: idx = 3; break;
+                    case sf::Keyboard::Num4: idx = 3; break;
+                    case sf::Keyboard::Num5: idx = 4; break;
+                    case sf::Keyboard::Dash: idx = 5; break;
+                    case sf::Keyboard::Num6: idx = 5; break;
+                    case sf::Keyboard::Num7: idx = 6; break;
+                    case sf::Keyboard::Num8: idx = 7; break;
+                    case sf::Keyboard::Num9: idx = 8; break;
+                    case sf::Keyboard::Num0: idx = 9; break;
+                    default: break;
+                }
+            }
+
+            if (idx != -1 && idx < (int)_modules.size()) {
+                _modules[idx].isVisible = !_modules[idx].isVisible;
+            }
+        }
+
         if (event.type == sf::Event::MouseWheelScrolled) {
             if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel) {
 

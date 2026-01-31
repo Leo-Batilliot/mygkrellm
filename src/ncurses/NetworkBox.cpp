@@ -8,12 +8,29 @@
 #include "NetworkBox.hpp"
 #include <iostream>
 
-NetworkBox::NetworkBox(int x, int y) : _box(newwin(25, 75, y, x)), _downloadHisto{}, _updateHisto{}, _lastUpdate(time(nullptr)) {}
+NetworkBox::NetworkBox(int x, int y) : _box(newwin(25, 72, y, x)), _downloadHisto{}, _updateHisto{}, _lastUpdate(time(nullptr)), _height(25) {}
+
+NetworkBox::NetworkBox() : _box(newwin(25, 72, 0, 0)), _downloadHisto{}, _updateHisto{}, _lastUpdate(time(nullptr)), _height(25) {}
 
 NetworkBox::~NetworkBox()
 {
     if (_box)
         delwin(_box);
+}
+
+void NetworkBox::setYPos(int y) {
+    if (_box)
+        delwin(_box);
+    _box = newwin(_height, 72, y, 2);
+}
+
+int NetworkBox::getYPos() const {
+    if (!_box) return 0;
+    return getbegy(_box);
+}
+
+int NetworkBox::getHeight() const {
+    return _height;
 }
 
 std::string NetworkBox::getModuleNeeded() const {
@@ -82,7 +99,7 @@ void NetworkBox::display(Krell::IModule *module) {
     wattron(_box, COLOR_PAIR(1));
     mvwprintw(_box, 0, 5, " Network ");
     wattroff(_box, COLOR_PAIR(1));
-    mvwprintw(_box, 0, 15, "=");
+    mvwprintw(_box, 0, 14, "=");
     wattroff(_box, A_BOLD);
 
     mvwprintw(_box, 1, 1, "Download: %s | Highest: %.0f KB/s", downloadS.c_str(), _highestDL);

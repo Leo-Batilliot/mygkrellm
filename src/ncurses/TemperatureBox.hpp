@@ -20,6 +20,7 @@ class TemperatureBox : public IBox {
         WINDOW *_box;
         std::vector<float> _prevData;
         int _countPush;
+        int _height;
 
         /* Methods */
 
@@ -31,11 +32,14 @@ class TemperatureBox : public IBox {
     public:
         /* Const / Destr */
         TemperatureBox(int x, int y);
+        TemperatureBox();
         ~TemperatureBox() override;
 
         /* Getters */
 
         /* Setters */
+        void setYPos(int y) override;
+        int getYPos() const override;
 
         /* Operator */
 
@@ -43,6 +47,7 @@ class TemperatureBox : public IBox {
         void display(Krell::IModule *module) override;
         WINDOW *getWin() const override;
         std::string getModuleNeeded() const override;
+        int getHeight() const override;
 };
 
 #endif
