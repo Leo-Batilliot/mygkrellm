@@ -4,8 +4,8 @@
 #include <SFML/Graphics.hpp>
 
 // Window Settings
-#define WIN_WIDTH 600
-#define WIN_HEIGHT 800
+#define WIN_WIDTH 800
+#define WIN_HEIGHT 1080
 #define WIN_TITLE "MyGKrellm"
 #define FRAME_LIMIT 60
 

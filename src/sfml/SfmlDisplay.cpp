@@ -11,9 +11,16 @@ SfmlDisplay::~SfmlDisplay() {}
 
 void SfmlDisplay::init()
 {
-    _window.create(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), WIN_TITLE);
+    _window.create(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "My MyGKrellM");
+    sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+
+    sf::Vector2i centerPos((desktop.width / 2) - (WIN_WIDTH / 2), (desktop.height / 2) - (WIN_HEIGHT / 2));
+    _window.setPosition(centerPos);
     _window.setFramerateLimit(FRAME_LIMIT);
+
     _font.loadFromFile(FONT_PATH);
+
+    _view = _window.getDefaultView();
 }
 
 void SfmlDisplay::stop()

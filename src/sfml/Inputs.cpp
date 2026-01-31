@@ -8,11 +8,18 @@ bool SfmlDisplay::handle_inputs()
 
         sf::Vector2i mousePos = sf::Mouse::getPosition(_window);
 
+        if (event.type == sf::Event::Resized) {
+            sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+            _view.setSize(static_cast<float>(event.size.width), static_cast<float>(event.size.height));
+            _view.setCenter(event.size.width / 2.0f, (event.size.height / 2.0f) + _scrollY);
+        }
+
         if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+            sf::Vector2f worldMousePos = _window.mapPixelToCoords(mousePos);
             for (int i = 0; i < (int)_modules.size(); ++i) {
-                if (_modules[i].background.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                if (_modules[i].background.getGlobalBounds().contains(worldMousePos.x, worldMousePos.y)) {
                     _draggedIdx = i;
-                    _dragOffset = _modules[i].background.getPosition() - sf::Vector2f(mousePos.x, mousePos.y);
+                    _dragOffset = _modules[i].background.getPosition() - worldMousePos;
                     break;
                 }
             }
@@ -29,6 +36,16 @@ bool SfmlDisplay::handle_inputs()
             }
             _draggedIdx = -1;
             _targetIdx = -1;
+        }
+
+        if (event.type == sf::Event::MouseWheelScrolled) {
+            if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel) {
+                _scrollY -= event.mouseWheelScroll.delta * _scrollSpeed;
+
+                if (_scrollY < 0) _scrollY = 0;
+
+                if (_scrollY > _maxScrollY) _scrollY = _maxScrollY;
+            }
         }
     }
     return true;
