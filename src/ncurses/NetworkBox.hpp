@@ -33,8 +33,8 @@ class NetworkBox : public IBox {
         std::deque<int> _downloadHisto;
         std::deque<int> _updateHisto;
         time_t _lastUpdate;
-        int _highestDL = 0;
-        int _highestUP = 0;
+        float _highestDL = 0;
+        float _highestUP = 0;
         int _height;
 };
 
