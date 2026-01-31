@@ -12,6 +12,7 @@
 #include "ncurses/BatteryBox.hpp"
 #include "ncurses/UptimeBox.hpp"
 #include "ncurses/TemperatureBox.hpp"
+#include "ncurses/DiskBox.hpp"
 #include "ncurses/IBox.hpp"
 
 NcursesDisplay::~NcursesDisplay()
@@ -30,16 +31,17 @@ void NcursesDisplay::init()
     init_pair(2, COLOR_YELLOW, -1);
     init_pair(3, COLOR_GREEN, -1);
 
-    _boxes.push_back(new TimeBox(2, 2));
-    _boxes.push_back(new HostnameBox(2, 7));
-    _boxes.push_back(new NetworkBox(2, 48));
-    _boxes.push_back(new OsBox(2, 12));
-    _boxes.push_back(new CpuBox(2, 73));
-    _boxes.push_back(new RamBox(2, 17));
-    _boxes.push_back(new BatteryBox(2, 24));
-    _boxes.push_back(new UptimeBox(2, 31));
-    _boxes.push_back(new TemperatureBox(2, 36));
-
+    _boxes.push_back(new TimeBox());
+    _boxes.push_back(new HostnameBox());
+    _boxes.push_back(new OsBox());
+    _boxes.push_back(new UptimeBox());
+    _boxes.push_back(new BatteryBox());
+    _boxes.push_back(new TemperatureBox());
+    _boxes.push_back(new DiskBox());
+    _boxes.push_back(new RamBox());
+    _boxes.push_back(new CpuBox());
+    _boxes.push_back(new NetworkBox());
+  
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
 }
@@ -62,17 +64,19 @@ void NcursesDisplay::display(const std::vector<Krell::IModule *> &modules)
 {
     erase(); 
 
-    int h, w;
-    getmaxyx(stdscr, h, w);
-    box(stdscr, 0, 0);
-    mvprintw(1, 2, "Ncurses Display (press q to quit, s to switch) - %dx%d", w, h);
+    //box(stdscr, 0, 0);
+    mvprintw(1, 2, "MyGKrellm (press q to quit, s to switch)");
     
     wnoutrefresh(stdscr);
 
     for (auto module : modules) {
-        for (IBox *box : _boxes) {
-            if (box && box->getModuleNeeded() == module->getName()) {
-                box->display(module);
+        for (int i = _iterator; i < (int)_boxes.size(); i++) {
+            if (_boxes[i]->getModuleNeeded() == module->getName()) {
+                _boxes[i]->display(module);
+                if (i == _iterator)
+                    _boxes[i]->setYPos(2);
+                else
+                    _boxes[i]->setYPos(_boxes[i - 1]->getYPos() + _boxes[i - 1]->getHeight() + 1);
             }
         }
     }
@@ -82,6 +86,19 @@ void NcursesDisplay::display(const std::vector<Krell::IModule *> &modules)
 int NcursesDisplay::handle_inputs()
 {
     int ch = getch();
+
+    if (ch == KEY_DOWN)
+        _iterator++;
+    if (ch == KEY_UP)
+        _iterator--;
+    if (ch == ' ')
+        _iterator = 0;
+    if (_iterator >= (int)_boxes.size()) {
+        _iterator = 0;
+    }
+    if (_iterator < 0) {
+        _iterator = _boxes.size() - 1;
+    }
 
     if (ch == 'q') return 1;
     if (ch == 's') return 2;

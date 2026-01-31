@@ -14,15 +14,20 @@
 class HostnameBox : public IBox {
     public:
         HostnameBox(int x, int y);
+        HostnameBox();
         ~HostnameBox() override;
 
         void display(Krell::IModule *module) override;
         WINDOW *getWin() const override;
         std::string getModuleNeeded() const override;
+        int getHeight() const override;
+        void setYPos(int y) override;
+        int getYPos() const override;
 
     protected:
     private:
         WINDOW *_box;
+        int _height;
 };
 
 #endif /* !HOSTNAMEBOX_HPP_ */

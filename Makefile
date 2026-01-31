@@ -31,6 +31,7 @@ SRC	=	src/main.cpp \
 		src/ncurses/BatteryBox.cpp \
 		src/ncurses/UptimeBox.cpp \
 		src/utils/Utils.cpp \
+		src/ncurses/DiskBox.cpp \
 
 # COLORS
 RED=\033[31m

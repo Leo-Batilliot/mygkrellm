@@ -32,6 +32,8 @@ class IBox {
         /* Getters */
 
         /* Setters */
+        virtual void setYPos(int y) = 0;
+        virtual int getYPos() const = 0;
 
         /* Operator */
 
@@ -39,6 +41,7 @@ class IBox {
         virtual void display(Krell::IModule *module) = 0;
         virtual WINDOW *getWin() const = 0;
         virtual std::string getModuleNeeded() const = 0;
+        virtual int getHeight() const = 0;
 };
 
 std::string safeGet(const std::map<std::string, std::string>& data, const std::string& key);

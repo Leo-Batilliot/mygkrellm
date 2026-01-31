@@ -18,11 +18,15 @@
 class NetworkBox : public IBox {
     public:
         NetworkBox(int x, int y);
+        NetworkBox();
         ~NetworkBox() override;
 
         void display(Krell::IModule *module) override;
         WINDOW *getWin() const override;
         std::string getModuleNeeded() const override;
+        int getHeight() const override;
+        void setYPos(int y) override;
+        int getYPos() const override;
 
     protected:
     private:
@@ -30,8 +34,9 @@ class NetworkBox : public IBox {
         std::deque<int> _downloadHisto;
         std::deque<int> _updateHisto;
         time_t _lastUpdate;
-        int _highestDL = 0;
-        int _highestUP = 0;
+        float _highestDL = 0;
+        float _highestUP = 0;
+        int _height;
 };
 
 #endif /* !NETWORKBOX_HPP_ */

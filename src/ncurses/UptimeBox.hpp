@@ -16,6 +16,7 @@ class UptimeBox : public IBox {
     private:
         /* Attributs */
         WINDOW *_box;
+        int _height;
 
         /* Methods */
 
@@ -27,11 +28,14 @@ class UptimeBox : public IBox {
     public:
         /* Const / Destr */
         UptimeBox(int x, int y);
+        UptimeBox();
         ~UptimeBox() override;
 
         /* Getters */
 
         /* Setters */
+        void setYPos(int y) override;
+        int getYPos() const override;
 
         /* Operator */
 
@@ -39,6 +43,7 @@ class UptimeBox : public IBox {
         void display(Krell::IModule *module) override;
         WINDOW *getWin() const override;
         std::string getModuleNeeded() const override;
+        int getHeight() const override;
 };
 
 #endif

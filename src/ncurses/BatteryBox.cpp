@@ -7,7 +7,9 @@
 
 #include "BatteryBox.hpp"
 
-BatteryBox::BatteryBox(int x, int y) : _box(newwin(7, 72, y, x)) {}
+BatteryBox::BatteryBox(int x, int y) : _box(newwin(7, 72, y, x)), _height(7) {}
+
+BatteryBox::BatteryBox() : _box(newwin(7, 72, 0, 0)), _height(7) {}
 
 BatteryBox::~BatteryBox() {
     if (_box)
@@ -20,6 +22,21 @@ WINDOW *BatteryBox::getWin() const {
 
 std::string BatteryBox::getModuleNeeded() const {
     return "Battery";
+}
+
+int BatteryBox::getHeight() const {
+    return _height;
+}
+
+void BatteryBox::setYPos(int y) {
+    if (_box)
+        delwin(_box);
+    _box = newwin(_height, 72, y, 2);
+}
+
+int BatteryBox::getYPos() const {
+    if (!_box) return 0;
+    return getbegy(_box);
 }
 
 void BatteryBox::display(Krell::IModule *module) {

@@ -8,12 +8,29 @@
 #include "NetworkBox.hpp"
 #include <iostream>
 
-NetworkBox::NetworkBox(int x, int y) : _box(newwin(25, 75, y, x)), _downloadHisto{}, _updateHisto{}, _lastUpdate(time(nullptr)) {}
+NetworkBox::NetworkBox(int x, int y) : _box(newwin(25, 72, y, x)), _downloadHisto{}, _updateHisto{}, _lastUpdate(time(nullptr)), _height(25) {}
+
+NetworkBox::NetworkBox() : _box(newwin(25, 72, 0, 0)), _downloadHisto{}, _updateHisto{}, _lastUpdate(time(nullptr)), _height(25) {}
 
 NetworkBox::~NetworkBox()
 {
     if (_box)
         delwin(_box);
+}
+
+void NetworkBox::setYPos(int y) {
+    if (_box)
+        delwin(_box);
+    _box = newwin(_height, 72, y, 2);
+}
+
+int NetworkBox::getYPos() const {
+    if (!_box) return 0;
+    return getbegy(_box);
+}
+
+int NetworkBox::getHeight() const {
+    return _height;
 }
 
 std::string NetworkBox::getModuleNeeded() const {
@@ -30,16 +47,34 @@ void NetworkBox::display(Krell::IModule *module) {
     constexpr std::size_t MAX_HISTO = 68;
     time_t now = time(nullptr);
 
-    int download = stoi(data.at("Download"));
-    int upload = stoi(data.at("Upload"));
+    std::string downloadS = data.at("Download");
+    std::string uploadS = data.at("Upload");
+    bool isKB_DL = (downloadS.find("KB/s") != std::string::npos);
+    bool isKB_UP = (uploadS.find("KB/s") != std::string::npos);
+    float download = stof(data.at("Download"));
+    float upload = stof(data.at("Upload"));
 
-    if (_highestDL < download) {
-        _highestDL = download;
+    if (!isKB_DL) {
+        download = download * 1000;
+    }
+    if (!isKB_UP) {
+        upload = upload * 1000;
     }
 
-    if (_highestUP < upload) {
-        _highestUP = upload;
+    if (!_downloadHisto.empty()) {
+        _highestDL = *std::max_element(
+            _downloadHisto.begin(),
+            _downloadHisto.end()
+        );
     }
+
+    if (!_updateHisto.empty()) {
+        _highestUP = *std::max_element(
+            _updateHisto.begin(),
+            _updateHisto.end()
+        );
+    }
+
 
     if (_updateHisto.empty()) {
         _downloadHisto.push_back(download);
@@ -64,29 +99,42 @@ void NetworkBox::display(Krell::IModule *module) {
     wattron(_box, COLOR_PAIR(1));
     mvwprintw(_box, 0, 5, " Network ");
     wattroff(_box, COLOR_PAIR(1));
-    mvwprintw(_box, 0, 15, "=");
+    mvwprintw(_box, 0, 14, "=");
     wattroff(_box, A_BOLD);
 
-    mvwprintw(_box, 1, 1, "Download: %s | Highest: %i", data.at("Download").c_str(), _highestDL);
+    mvwprintw(_box, 1, 1, "Download: %s | Highest: %.0f KB/s", downloadS.c_str(), _highestDL);
     mvwprintw(_box, 2, 1, "100|");
-    mvwprintw(_box, 6, 1, "50 |");
-    mvwprintw(_box, 11, 1, "0  |");
-    mvwprintw(_box, 12, 1, "Upload: %s | Highest: %i", data.at("Upload").c_str(), _highestUP);
+    mvwprintw(_box, 6, 1, " 50|");
+    mvwprintw(_box, 11, 1, "  0|");
+    mvwprintw(_box, 12, 1, "Upload: %s | Highest: %.0f KB/s", uploadS.c_str(), _highestUP);
     mvwprintw(_box, 13, 1, "100|");
-    mvwprintw(_box, 18, 1, "50 |");
-    mvwprintw(_box, 23, 1, "0  |");
+    mvwprintw(_box, 18, 1, " 50|");
+    mvwprintw(_box, 23, 1, "  0|");
 
     for (size_t i = 0; i < _downloadHisto.size(); i++) {
-        int height = (_downloadHisto[i]) % 10;
+        int v = _downloadHisto[i];
+        int height = 0;
+
+        if (_highestDL > 0 && v > 0) {
+            height = (v * 10) / _highestDL;
+            if (height > 10) height = 10;
+        }
+
         for (int j = 0; j < height; j++) {
-            mvwprintw(_box, 11 - j, i + 5, "=");
+            mvwprintw(_box, 11 - j, i + 5, "O");
         }
     }
-
     for (size_t i = 0; i < _updateHisto.size(); i++) {
-        int height = (_updateHisto[i]) % 10;
+        int v = _updateHisto[i];
+        int height = 0;
+
+        if (_highestUP > 0 && v > 0) {
+            height = (v * 10) / _highestUP;
+            if (height > 10) height = 10;
+        }
+
         for (int j = 0; j < height; j++) {
-            mvwprintw(_box, 23 - j, i + 5, "=");
+            mvwprintw(_box, 23 - j, i + 5, "O");
         }
     }
     

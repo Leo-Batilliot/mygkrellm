@@ -7,12 +7,29 @@
 
 #include "TimeBox.hpp"
 
-TimeBox::TimeBox(int x, int y) : _box(newwin(5, 72, y, x)) {}
+TimeBox::TimeBox(int x, int y) : _box(newwin(5, 72, y, x)), _height(5) {}
+
+TimeBox::TimeBox() : _box(newwin(5, 72, 0, 0)), _height(5) {}
 
 TimeBox::~TimeBox()
 {
     if (_box)
         delwin(_box);
+}
+
+int TimeBox::getHeight() const {
+    return _height;
+}
+
+void TimeBox::setYPos(int y) {
+    if (_box)
+        delwin(_box);
+    _box = newwin(_height, 72, y, 2);
+}
+
+int TimeBox::getYPos() const {
+    if (!_box) return 0;
+    return getbegy(_box);
 }
 
 std::string TimeBox::getModuleNeeded() const {

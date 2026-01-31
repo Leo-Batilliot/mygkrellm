@@ -7,7 +7,9 @@
 
 #include "CpuBox.hpp"
 
-CpuBox::CpuBox(int x, int y) : _box(newwin(16, 75, y, x)) {}
+CpuBox::CpuBox(int x, int y) : _box(newwin(16, 72, y, x)), _height(16) {}
+
+CpuBox::CpuBox() : _box(newwin(16, 72, 0, 0)), _height(16) {}
 
 CpuBox::~CpuBox() {
     if (_box)
@@ -16,6 +18,21 @@ CpuBox::~CpuBox() {
 
 WINDOW *CpuBox::getWin() const {
     return _box;
+}
+
+int CpuBox::getHeight() const {
+    return _height;
+}
+
+void CpuBox::setYPos(int y) {
+    if (_box)
+        delwin(_box);
+    _box = newwin(_height, 72, y, 2);
+}
+
+int CpuBox::getYPos() const {
+    if (!_box) return 0;
+    return getbegy(_box);
 }
 
 std::string CpuBox::getModuleNeeded() const {
@@ -34,7 +51,8 @@ void CpuBox::display(Krell::IModule *module) {
     std::map<std::string, std::string> &coresUsage = cpuModule->getCoreUsage();
     int nbCores = coresUsage.size();
     int height = 8 + (nbCores / 2) + (nbCores % 2);
-    wresize(_box, height, 75);
+    wresize(_box, height + 1, 72);
+    _height = height + 1;
 
     wnoutrefresh(_box);
     werase(_box);
