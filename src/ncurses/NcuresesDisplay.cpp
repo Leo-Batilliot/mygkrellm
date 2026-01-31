@@ -6,6 +6,7 @@
 #include "ncurses/RamBox.hpp"
 #include "ncurses/CpuBox.hpp"
 #include "ncurses/OsBox.hpp"
+#include "ncurses/BatteryBox.hpp"
 
 NcursesDisplay::~NcursesDisplay()
 {
@@ -29,6 +30,7 @@ void NcursesDisplay::init()
     _boxes.push_back(new OsBox(2, 46));
     _boxes.push_back(new CpuBox(2, 12));
     _boxes.push_back(new RamBox(2, 29));
+    _boxes.push_back(new BatteryBox(2, 42));
 
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
