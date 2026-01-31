@@ -4,13 +4,14 @@ int SfmlDisplay::handle_inputs()
 {
     sf::Event event;
     while (_window.pollEvent(event)) {
-        if (event.type == sf::Event::Closed)
+        if ((event.type == sf::Event::Closed) || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Q))
             return 1;
 
         if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::S)
             return 2;
 
         sf::Vector2i mousePos = sf::Mouse::getPosition(_window);
+        sf::Vector2f mapmousePos = _window.mapPixelToCoords(mousePos);
 
         if (event.type == sf::Event::Resized) {
             sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
@@ -18,12 +19,23 @@ int SfmlDisplay::handle_inputs()
             _view.setCenter(event.size.width / 2.0f, (event.size.height / 2.0f) + _scrollY);
         }
 
-        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-            sf::Vector2f worldMousePos = _window.mapPixelToCoords(mousePos);
+        if (event.type == sf::Event::MouseButtonPressed ) {
             for (int i = 0; i < (int)_modules.size(); ++i) {
-                if (_modules[i].background.getGlobalBounds().contains(worldMousePos.x, worldMousePos.y)) {
+                if (_modules[i].background.getGlobalBounds().contains(mapmousePos.x, mapmousePos.y)) {
                     _draggedIdx = i;
-                    _dragOffset = _modules[i].background.getPosition() - worldMousePos;
+                    _dragOffset = _modules[i].background.getPosition() - mapmousePos;
+                    break;
+                }
+            }
+        }
+
+        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+            for (int i = 0; i < (int)_modules.size(); ++i) {
+                sf::FloatRect bounds = _modules[i].background.getGlobalBounds();
+
+                if (bounds.contains(mapmousePos)) {
+                    _draggedIdx = i;
+                    _dragOffset = _modules[i].background.getPosition() - mapmousePos;
                     break;
                 }
             }

@@ -11,7 +11,7 @@ SfmlDisplay::~SfmlDisplay() {}
 
 void SfmlDisplay::init()
 {
-    _window.create(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "My MyGKrellM");
+    _window.create(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), WIN_TITLE);
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 
     sf::Vector2i centerPos((desktop.width / 2) - (WIN_WIDTH / 2), (desktop.height / 2) - (WIN_HEIGHT / 2));
@@ -19,6 +19,8 @@ void SfmlDisplay::init()
     _window.setFramerateLimit(FRAME_LIMIT);
 
     _font.loadFromFile(FONT_PATH);
+    _lightningTexture.loadFromFile(LIGHTNING_PATH);
+    _lightningSprite.setTexture(_lightningTexture);
 
     _view = _window.getDefaultView();
 }
