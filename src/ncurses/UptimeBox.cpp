@@ -7,11 +7,26 @@
 
 #include "UptimeBox.hpp"
 
-UptimeBox::UptimeBox(int x, int y) : _box(newwin(5, 72, y, x)) {}
+UptimeBox::UptimeBox(int x, int y) : _box(newwin(5, 72, y, x)), _height(5) {}
 
 UptimeBox::~UptimeBox() {
     if (_box)
         delwin(_box);
+}
+
+void UptimeBox::setYPos(int y) {
+    if (_box)
+        delwin(_box);
+    _box = newwin(_height, 72, y, 2);
+}
+
+int UptimeBox::getYPos() const {
+    if (!_box) return 0;
+    return getbegy(_box);
+}
+
+int UptimeBox::getHeight() const {
+    return _height;
 }
 
 WINDOW *UptimeBox::getWin() const {
