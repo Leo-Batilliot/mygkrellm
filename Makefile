@@ -19,6 +19,7 @@ SRC	=	src/main.cpp \
 		src/sfml/DrawBattery.cpp \
 		src/sfml/SfmlUtils.cpp \
 		src/ncurses/NcuresesDisplay.cpp \
+		src/ncurses/NetworkBox.cpp \
 		src/ncurses/RamBox.cpp \
 		src/ncurses/CpuBox.cpp \
 		src/ncurses/TimeBox.cpp \

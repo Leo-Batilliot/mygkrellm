@@ -27,9 +27,6 @@ void HostnameBox::display(Krell::IModule *module) {
     if (!_box) return;
     const std::map<std::string, std::string> data = module->getData();
 
-    if (data.find("Hostname") == data.end() || data.find("Username") == data.end())
-        return; // ou affiche un message d'erreur
-
     std::string hostname = data.at("Hostname");
     std::string username = data.at("Username");
 

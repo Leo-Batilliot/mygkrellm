@@ -7,6 +7,7 @@
 #include "ncurses/CpuBox.hpp"
 #include "ncurses/TimeBox.hpp"
 #include "ncurses/HostnameBox.hpp"
+#include "ncurses/NetworkBox.hpp"
 
 NcursesDisplay::~NcursesDisplay()
 {
@@ -29,6 +30,7 @@ void NcursesDisplay::init()
     _boxes.push_back(new HostnameBox(2, 7));
     _boxes.push_back(new CpuBox(2, 12));
     _boxes.push_back(new RamBox(2, 29));
+    _boxes.push_back(new NetworkBox(80, 12));
 
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
