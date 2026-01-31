@@ -1,7 +1,7 @@
 #include "TemperatureBox.hpp"
 #include <algorithm>
 
-TemperatureBox::TemperatureBox(int x, int y) : _box(newwin(12, 72, y, x)) {}
+TemperatureBox::TemperatureBox(int x, int y) : _box(newwin(12, 75, y, x)) {}
 
 TemperatureBox::~TemperatureBox() {
     if (_box)
@@ -23,7 +23,7 @@ void TemperatureBox::display(Krell::IModule *module) {
     float currentTemp = std::stof(data.at("Temp"));
     
     _prevData.push_back(currentTemp);
-    if (_prevData.size() > 6000)
+    if (_prevData.size() > 600)
         _prevData.erase(_prevData.begin());
 
     werase(_box);
@@ -47,7 +47,7 @@ void TemperatureBox::display(Krell::IModule *module) {
     float minT = 30.0;
     float maxT = 90.0;
 
-    for (size_t i = 0; i < _prevData.size() ; i += 100) {
+    for (size_t i = 0; i < _prevData.size() ; i += 10) {
         float val = _prevData[i];
         
         int pointY = (int)((val - minT) / (maxT - minT) * graphHeight);
