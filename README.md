@@ -1,5 +1,7 @@
 # 🖥️ MyGKrellm
 
+![Demo](docs/demo.gif)
+
 > **GNU Krell Monitors – Clone C++**
 >
 > Projet **RUSH 4 – Epitech**  
